@@ -16,16 +16,32 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "run script"
+          name: "run json script"
           command: |
            npm install axios 
            node buildwaiverdata.js
-            
-
+      - run:
+          name: "run csv script"
+          command: |
+           npm install json2csv
+           node buildcsvdata.js
+      
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  execute-bash-workflow:
+  develop-workflow:
+    jobs:
+      - approval:
+          type: approval
+      - run-script:
+          requires: 
+          - approval
+          filters:
+            branches:
+              only:
+               - develop
+
+  main-workflow:
     triggers:
       - schedule:
           cron: "0 11,17 * * *"
