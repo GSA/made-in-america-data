@@ -1,7 +1,6 @@
 const fs = require('fs')
 const WAIVERS_CSV_URL = "https://api.github.com/repos/GSA/made-in-america-data/contents/waiverscsv.csv"
 const API_KEY = process.env.GH_API_KEY
-const FORMSKEY = process.env.FORMS_API_KEY;
 const { Parser } = require('json2csv')
 const axios = require('axios');
 const dataDir = './_data';
@@ -110,7 +109,8 @@ function convertJSONToCSV(jsondata) {
       const result = await axios(url, {
         method: 'get',
         headers: {
-          'x-token': FORMSKEY
+          'Authorization': 'Bearer ' + API_KEY,
+          'Content-Type': 'application/json'
         },
         //"branch" : mainbranch
       })
