@@ -33,6 +33,10 @@ workflows:
     jobs:
       - approval:
           type: approval
+          filters:
+            branches:
+              only:
+               - develop
       - run-script:
           requires: 
           - approval
