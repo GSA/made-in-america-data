@@ -1,13 +1,10 @@
 const fs = require('fs')
 const axios = require('axios');
 const dataDir = './_data';
-let waiversFile;
-let oldData;
-let newData;
-const DATAURL = "https://submission.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId"
-const GITHUBURL = "https://api.github.com/repos/GSA/made-in-america-data/contents/waivers-data.json"
-const API_KEY = process.env.GH_API_KEY
-const FORMSKEY = process.env.FORMS_API_KEY;
+let waiversFile, oldData, newData;
+const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH} = process.env
+const DATAURL = "https://submission.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId";
+const GITHUBURL  =`https://api.github.com/repos/GSA/made-in-america-data/contents/waivers-data.json?ref=${process.env.CIRCLE_BRANCH}`
 
 async function loadData() {
   try {
@@ -42,30 +39,22 @@ async function getData(url) {
         let text = buffObj.toString('utf-8')      
         ajaxdata.data = JSON.parse(text)
       }
+
+      const expectedDuration = {
+        'between2And3Years':'Between 2 and 3 years',
+        'instantDeliveryOnly': 'Instant Delivery Only',
+        '06Months': '0 - 6 months',
+        'between6MonthsAnd1Year': 'Between 6 months and 1 year',
+        'between1And2Years': 'Between 1 and 2 years',
+        'between3And5Years' : 'Between 3 and 5 years',
+        'moreThan5Years' : 'More than 5 years'
+      }
       // * ...string manipulation for better readable text for the front end
       return ajaxdata.data.map(item => {
         let temp = Object.assign({}, item)
-        if(temp.data.expectedMaximumDurationOfTheRequestedWaiver === 'between2And3Years') {
-           temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 2 and 3 years'
-        } 
-        if(temp.data.expectedMaximumDurationOfTheRequestedWaiver === 'instantDeliveryOnly'){
-        temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Instant Delivery Only'
-        }
-        if(temp.data.expectedMaximumDurationOfTheRequestedWaiver === '06Months'){
-          temp.data.expectedMaximumDurationOfTheRequestedWaiver = '0 - 6 months'
-        }
-        if(temp.data.expectedMaximumDurationOfTheRequestedWaiver === 'between6MonthsAnd1Year'){
-          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 6 months and 1 year'
-        }
-        if(temp.data.expectedMaximumDurationOfTheRequestedWaiver === 'between1And2Years'){
-          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 1 and 2 years'
-        }   
-        if(temp.data.expectedMaximumDurationOfTheRequestedWaiver === 'between3And5Years'){
-          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 3 and 5 years'
-        }     
-        if(temp.data.expectedMaximumDurationOfTheRequestedWaiver === 'moreThan5Years'){
-          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'More than 5 years'
-        }
+
+        temp.data.expectedMaximumDurationOfTheRequestedWaiver = expectedDuration[item.data.expectedMaximumDurationOfTheRequestedWaiver]
+
         if (temp.data.procurementStage === 'postSolicitation'){
           temp.data.procurementStage = 'Post-solicitation';
         }
@@ -177,7 +166,6 @@ async function addNewWaivers() {
       return;
     })
   }
-  // oldData = fs.readFileSync(`${waiversFile}`, 'utf-8', 2)
 }
 
 
@@ -235,7 +223,7 @@ function ajaxMethod(data, shaValue) {
       "message": "file uploaded on " + event.toLocaleDateString(undefined, options) + " at " + event.toLocaleTimeString('en-US'),
       "content": buffered,
       "sha" : shaValue,
-      "branch": "main"
+      "branch": CIRCLE_BRANCH
   })
 
   let config = {
