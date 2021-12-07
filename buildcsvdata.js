@@ -104,7 +104,8 @@ function convertJSONToCSV(jsondata) {
       const result = await axios(url, {
         method: 'get',
         headers: {
-          'x-token': FORMSKEY
+          'Authorization': 'Bearer ' + API_KEY,
+          'Content-Type': 'application/json'
         },
         "branch" : CIRCLE_BRANCH
       })
