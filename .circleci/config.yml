@@ -48,12 +48,18 @@ workflows:
                - develop
 
   main-workflow:
-    triggers:
-      - schedule:
-          cron: "0 11,23 * * *"
+    #triggers:
+    #  - schedule:
+    #      cron: "0 11,23 * * *"
+    #      filters:
+    #        branches:
+    #          only:
+    #            - main
+    jobs:
+      - run-script:
+          requires:
+          - approval
           filters:
             branches:
               only:
-                - main
-    jobs:
-      - run-script
+              - main
