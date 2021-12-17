@@ -56,6 +56,12 @@ workflows:
     #          only:
     #            - main
     jobs:
+      - approval:
+          type: approval
+          filters:
+            branches:
+              only:
+               - main            
       - run-script:
           requires:
           - approval
