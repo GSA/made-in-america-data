@@ -1,6 +1,9 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const fs = require('fs')
 const axios = require('axios');
-const dataDir = './_data';
+const dataDir = '.';
 let waiversFile, oldData, newData;
 const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH} = process.env
 const DATAURL = "https://submission.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId";
@@ -11,8 +14,8 @@ async function loadData() {
       await smokeCheck();
       await addNewWaivers();
       updateReviewedWaivers();
-      pushtoRepo(oldData)
-      console.log('COMPLETED')
+      pushtoRepo(oldData);
+      console.log('COMPLETED');
 
   } catch (err) {
     console.log(`${err}`);
@@ -146,7 +149,6 @@ async function smokeCheck () {
     console.error('error in smoke test', err)
   }
 }
-
 async function addNewWaivers() {
   // * if there is no current waivers file in the directory
   if(!fs.existsSync(`${dataDir}/current-waivers.json`)) {
@@ -170,6 +172,7 @@ async function addNewWaivers() {
 
 
 function pushtoRepo(data) {
+  console.log('There are a total of ' + data.length + ' waviers being submitted')
   /** ajaxMethod
    * @param data is the current-waviers.json
    * @param '' is the sha value
@@ -194,8 +197,12 @@ function updateReviewedWaivers () {
   // * 'compareJSONsforChangesInModifiedDate' function
   if(newData) {
     console.log('in new data')
-    const final = newData.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
+    const modified = newData.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
     // * and replace them.
+    const combined = oldData.concat(modified)
+
+    const final = combined.filter((el, idx) => combined.findIndex(obj => obj._id === el._id) === idx)
+
     fs.writeFileSync(`${dataDir}/waivers-data.json`, JSON.stringify(final), 'utf-8')
     // * delete the current waiver file as it's not longer needed till the next pull
     fs.unlinkSync(`${dataDir}/current-waivers.json`)
