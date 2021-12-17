@@ -149,7 +149,6 @@ async function smokeCheck () {
     console.error('error in smoke test', err)
   }
 }
-
 async function addNewWaivers() {
   // * if there is no current waivers file in the directory
   if(!fs.existsSync(`${dataDir}/current-waivers.json`)) {

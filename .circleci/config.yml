@@ -18,12 +18,14 @@ jobs:
       - run:
           name: "run json script"
           command: |
-           npm install axios 
+           npm install axios
+           npm install dotenv 
            node buildwaiverdata.js
       - run:
           name: "run csv script"
           command: |
            npm install json2csv
+           npm install dotenv
            node buildcsvdata.js
       
 # Invoke jobs via workflows
