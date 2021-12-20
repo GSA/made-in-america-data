@@ -8,7 +8,6 @@ let waiversFile, oldData, newData;
 const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH} = process.env
 const DATAURL = "https://submission.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId";
 const GITHUBURL  =`https://api.github.com/repos/GSA/made-in-america-data/contents/waivers-data.json?ref=${process.env.CIRCLE_BRANCH}`
-
 async function loadData() {
   try {
       await smokeCheck();
@@ -16,12 +15,10 @@ async function loadData() {
       updateReviewedWaivers();
       pushtoRepo(oldData);
       console.log('COMPLETED');
-
   } catch (err) {
     console.log(`${err}`);
   }
 }
-
 async function getData(url) {
   try {
     console.log('async data request...')
@@ -29,7 +26,9 @@ async function getData(url) {
     const result = await axios(url, {
       method: 'get',
       headers: {
-        'x-token': FORMSKEY
+        'x-token': FORMSKEY,
+        'Authorization': 'Bearer ' + API_KEY,
+        'Content-Type': 'application/json'
       }
     })
     const sha = result.data.sha;
@@ -42,7 +41,6 @@ async function getData(url) {
         let text = buffObj.toString('utf-8')      
         ajaxdata.data = JSON.parse(text)
       }
-
       const expectedDuration = {
         'between2And3Years':'Between 2 and 3 years',
         'instantDeliveryOnly': 'Instant Delivery Only',
@@ -55,9 +53,7 @@ async function getData(url) {
       // * ...string manipulation for better readable text for the front end
       return ajaxdata.data.map(item => {
         let temp = Object.assign({}, item)
-
         temp.data.expectedMaximumDurationOfTheRequestedWaiver = expectedDuration[item.data.expectedMaximumDurationOfTheRequestedWaiver]
-
         if (temp.data.procurementStage === 'postSolicitation'){
           temp.data.procurementStage = 'Post-solicitation';
         }
@@ -116,7 +112,6 @@ async function getData(url) {
     console.error(err)
   }
 }
-
 async function smokeCheck () {
   try {
     console.log('checking if files exist...')
@@ -169,8 +164,6 @@ async function addNewWaivers() {
     })
   }
 }
-
-
 function pushtoRepo(data) {
   console.log('There are a total of ' + data.length + ' waviers being submitted')
   /** ajaxMethod
@@ -181,14 +174,12 @@ function pushtoRepo(data) {
    */
    ajaxMethod(data,'')
 }
-
 async function updateRepo(data) {
   console.log('getting SHA Value for Update')
    const response = await getData(GITHUBURL);
   const shaValue = response.sha;
   ajaxMethod(data,shaValue)
 }
-
 function updateReviewedWaivers () {
   console.log('Updating Waivers with new modified date')
   //  * function checks for json waivers that have changed modified data
@@ -199,17 +190,13 @@ function updateReviewedWaivers () {
     console.log('in new data')
     const modified = newData.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
     // * and replace them.
-    const combined = oldData.concat(modified)
-
+    const combined = modified.concat(oldData)
     const final = combined.filter((el, idx) => combined.findIndex(obj => obj._id === el._id) === idx)
-
     fs.writeFileSync(`${dataDir}/waivers-data.json`, JSON.stringify(final), 'utf-8')
     // * delete the current waiver file as it's not longer needed till the next pull
     fs.unlinkSync(`${dataDir}/current-waivers.json`)
   }
 }
-
-
 function compareJSONsforChangesInModifiedDate(prev, current) {    // * return the objects that do not have the same modified date. 
      const result = current.filter(({modified}) =>
     //  * ...convert Date object to correctly compare date
@@ -218,21 +205,18 @@ function compareJSONsforChangesInModifiedDate(prev, current) {    // * return th
     return result;
   
 }
-
 function ajaxMethod(data, shaValue) {
   // * when pushing to github, the data must be encoded to base64 format
   let buffered = Buffer.from(JSON.stringify(data)).toString('base64') 
   //  * and then the commit message, and all data must be stringfied
   const event = new Date(Date.now());
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
   let jsondata = JSON.stringify({
       "message": "file uploaded on " + event.toLocaleDateString(undefined, options) + " at " + event.toLocaleTimeString('en-US'),
       "content": buffered,
       "sha" : shaValue,
       "branch": CIRCLE_BRANCH
   })
-
   let config = {
     method: 'put',
       url: GITHUBURL,
@@ -263,5 +247,4 @@ function ajaxMethod(data, shaValue) {
         }
       });
 }
-
 loadData()
