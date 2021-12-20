@@ -34,6 +34,39 @@
     "modified": "2021-12-01T16:49:00.982Z"
   },
   {
+    "_id": "61b7325e01982708b7b65df1",
+    "state": "submitted",
+    "data": {
+      "contractingOfficeAgencyId": "1341",
+      "contractingOfficeAgencyName": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY",
+      "fundingAgencyId": "1341",
+      "fundingAgencyName": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY",
+      "naics": {
+        "NAICS_Code": 333314,
+        "NAICS_Title": "Optical Instrument and Lens Manufacturing"
+      },
+      "psc": {
+        "pscId": 787,
+        "pscCode": "6640",
+        "pscName": "LABORATORY EQUIPMENT AND SUPPLIES"
+      },
+      "procurementStage": "Pre-solicitation",
+      "procurementTitle": "External cavity diode lasers, high power, spectrally narrow, source of light that is tunable for wavelengths of 480-484 nm and 780-781 nm ",
+      "summaryOfProcurement": "The National Institute of Standards and Technology (NIST) Thermodynamic Metrology group is developing a Rydberg rubidium atom experiment that will enable quantum metrology of thermal radiation.  This project requires i) a high-power, spectrally narrow source of laser light that is tunable for wavelengths from 480-484nm and ii) a high-power, spectrally narrow source of laser light that is tunable for wavelengths from 780-781.  The requirements are for lasers that can produce these wavelengths at high power with long-term frequency stability.",
+      "sourcesSoughtOrRfiIssued": "No",
+      "piids": [{ "piid": "" }],
+      "isPricePreferenceIncluded": "No",
+      "waiverCoverage": "Individual Waiver",
+      "waiverRationaleSummary": "No Domestic product has been identified that can meet the Governments requirements and the sole source manufacturer (Toptica Photonics, Inc.) manufactures this equipment in Germany.  Therefore, it does not qualify as a us end product. ",
+      "expectedMaximumDurationOfTheRequestedWaiver": "Instant Delivery Only",
+      "requestStatus": "Reviewed",
+      "ombDetermination": "Consistent with Policy",
+      "countriesOfOriginAndUSContent": []
+    },
+    "created": "2021-12-13T11:45:34.330Z",
+    "modified": "2021-12-17T21:37:54.242Z"
+  },
+  {
     "_id": "618e9b85f6a478f23f267e9b",
     "state": "submitted",
     "data": {
@@ -361,40 +394,6 @@
     },
     "created": "2021-11-17T18:18:02.772Z",
     "modified": "2021-11-17T18:53:08.485Z"
-  },
-  {
-    "_id": "619bc73cae4010a061facf08",
-    "state": "submitted",
-    "data": {
-      "contractingOfficeAgencyId": "1341",
-      "contractingOfficeAgencyName": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY",
-      "fundingAgencyId": "1341",
-      "fundingAgencyName": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY",
-      "naics": {
-        "NAICS_Code": 334516,
-        "NAICS_Title": "Analytical Laboratory Instrument Manufacturing"
-      },
-      "psc": {
-        "pscId": 787,
-        "pscCode": "6640",
-        "pscName": "LABORATORY EQUIPMENT AND SUPPLIES"
-      },
-      "procurementStage": "Post-solicitation",
-      "piids": [{ "piid": "1333ND22PNB730011" }],
-      "solicitationId": "",
-      "procurementTitle": "Wasson ECE Gas Chromatograph Mass Spectrometer System",
-      "summaryOfProcurement": "The Fire Research Division (FRD) at the National Institute of Standards and Technology (NIST) Engineering Laboratory (EL) provides measurements observed in fire and combustion experiments to enhance the standards and practice of U.S. firefighting services and other fire-related organizations.\n\nOne of the tools available to characterize complex samples comprised of many analytes is the gas chromatograph/mass spectrometer (GC/MS). This instrument enables the separation of complex mixtures. In addition, a mass spectrometer enables selective detection of targeted analytes as well as a qualitative screening of non-targeted or targeted species. \n\nCurrently, the FRD has a single functioning GC/MS instrument suitable for routine and exploratory sample analyses. However, the existing instrumentation is limited in its ability to efficiently process and analyze samples. Furthermore, the existing instrument hardware and analytical method are restricted to the analysis of manual injection of ambient liquids. The FRD therefore requires a new GC/MS instrument with all-in-one additional capabilities for research purposes.\n\nThe purpose of this acquisition is to procure one (1) new all-in-one GC/MS system which meets the specifications identified in this document. This is a sole source requirement; only Wasson-ECE Instrumentation, Inc. is capable of meeting the need.  \n",
-      "sourcesSoughtOrRfiIssued": "No",
-      "isPricePreferenceIncluded": "Yes",
-      "waiverCoverage": "Individual Waiver",
-      "waiverRationaleSummary": "The results of the market research conducted for this requirement demonstrated that Wasson-ECE Instrumentation, Inc. is the only contractor capable of providing a GC/MS system equipped with necessary features required by the NIST EL. These features include flame ionization detectors, mass selectivity detectors, and thermal conductivity detectors configured for gas sampling, automated ambient liquid and solid-phase micro-extraction headspace, and thermal desorption tube analysis. Automated sample injection systems supported in tandem rather than individually are also required. Wasson-ECE Instrumentation, Inc. is the only contractor capable of providing the technology necessary.  They have developed a proprietary solution that consists primarily of components manufactured by Agilent Technologies in the United Kingdom.   These components cannot be exchanged without jeopardizing the system performance in meeting the requirements. Based on the findings stated above, it is determined that the required GC/MS system is not mined, produced, or manufactured in the United States in sufficient and reasonably available commercial quantities, of a satisfactory quality.  This results in the determination that the required GC/MS system shall be treated as a domestic article for this procurement.",
-      "expectedMaximumDurationOfTheRequestedWaiver": "Instant Delivery Only",
-      "requestStatus": "Submitted",
-      "ombDetermination": "",
-      "countriesOfOriginAndUSContent": []
-    },
-    "created": "2021-11-22T16:37:16.737Z",
-    "modified": "2021-11-23T18:00:03.500Z"
   },
   {
     "_id": "61954271f56f2c4cbc6c7c2c",

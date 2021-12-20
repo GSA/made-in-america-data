@@ -29,7 +29,9 @@ async function getData(url) {
     const result = await axios(url, {
       method: 'get',
       headers: {
-        'x-token': FORMSKEY
+        'x-token': FORMSKEY,
+        'Authorization': 'Bearer ' + API_KEY,
+        'Content-Type': 'application/json'
       }
     })
     const sha = result.data.sha;
