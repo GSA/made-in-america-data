@@ -166,6 +166,7 @@ async function addNewWaivers() {
 }
 function pushtoRepo(data) {
   console.log('There are a total of ' + data.length + ' waviers being submitted')
+  console.log('The data is : [' + JSON.stringify(data) + ']')
   /** ajaxMethod
    * @param data is the current-waviers.json
    * @param '' is the sha value
