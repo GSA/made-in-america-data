@@ -47,6 +47,21 @@ workflows:
               only:
                - develop
 
+  stage-workflow:
+    jobs:
+      - approval:
+          type: approval
+          filters:
+           branches:
+             only:
+              - stage
+      - run-script:
+          requires: 
+          - approval
+        filters:
+           branches:
+             only:
+              - stage
 
   main-workflow:
     triggers:
