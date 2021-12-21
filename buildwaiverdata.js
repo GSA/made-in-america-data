@@ -23,6 +23,7 @@ async function loadData() {
   }
 }
 
+
 async function getData(url) {
   try {
     console.log('async data request...')
