@@ -49,7 +49,7 @@ workflows:
 
   stage-workflow:
     jobs:
-      - stage-approval:
+      - approval:
           type: approval
           filters:
             branches:
@@ -57,7 +57,7 @@ workflows:
                - stage
       - run-script:
           requires: 
-          - stage-approval
+          - approval
         filters:
            branches:
              only:
