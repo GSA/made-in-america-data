@@ -1,3 +1,5 @@
+waivers-data.json
+waiverscsv.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,dotenv
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,dotenv
@@ -134,4 +136,9 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
+<<<<<<< HEAD
 # End of https://www.toptal.com/developers/gitignore/api/node,dotenv
+=======
+# End of https://www.toptal.com/developers/gitignore/api/node,dotenv
+
+>>>>>>> a5ae63dd601645da2be7eaa8c7c3463295690b71

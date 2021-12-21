@@ -1,12 +1,13 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const fs = require('fs')
 const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH} = process.env
-const WAIVERS_CSV_URL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waiverscsv.csv?ref${process.env.CIRCLE_BRANCH}`;
+const WAIVERS_CSV_URL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waiverscsv.csv?ref=${process.env.CIRCLE_BRANCH}`;
 const { Parser } = require('json2csv')
 const axios = require('axios');
-const dataDir = './_data';
 console.log('Branch is:', CIRCLE_BRANCH)
-const waiversFile = JSON.parse(fs.readFileSync(`${dataDir}/waivers-data.json`, 'utf-8'))
+const waiversFile = JSON.parse(fs.readFileSync(`waivers-data.json`, 'utf-8'))
 
 function convertJSONToCSV(jsondata) {
     
@@ -104,7 +105,8 @@ function convertJSONToCSV(jsondata) {
       const result = await axios(url, {
         method: 'get',
         headers: {
-          'x-token': FORMSKEY
+          'Authorization': 'Bearer ' + API_KEY,
+          'Content-Type': 'application/json'
         },
         "branch" : CIRCLE_BRANCH
       })
@@ -113,7 +115,6 @@ function convertJSONToCSV(jsondata) {
       if(sha) {
           return sha;
       }
-    //    return result;
     }
     catch(error) {
       console.log('error in getting sha value for CSV', error)
