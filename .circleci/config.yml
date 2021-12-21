@@ -58,10 +58,10 @@ workflows:
       - run-script:
           requires: 
           - approval
-        filters:
-           branches:
-             only:
-              - stage
+          filters:
+            branches:
+              only:
+               - stage
 
   main-workflow:
     triggers:
