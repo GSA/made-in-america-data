@@ -47,6 +47,14 @@ workflows:
               only:
                - develop
 
+  stage-workflow:
+    jobs:
+      - run-script:
+         filters:
+           branches:
+             only:
+              - stage
+
   main-workflow:
     triggers:
       - schedule:
