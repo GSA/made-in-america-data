@@ -52,9 +52,9 @@ workflows:
       - stage-approval:
           type: approval
           filters:
-           branches:
-             only:
-              - stage
+            branches:
+              only:
+               - stage
       - run-script:
           requires: 
           - stage-approval
