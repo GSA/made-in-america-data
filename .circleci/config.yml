@@ -49,11 +49,19 @@ workflows:
 
   stage-workflow:
     jobs:
+      - approval:
+          type: approval
+          filters:
+            branches:
+              only:
+               - stage
       - run-script:
-         filters:
-           branches:
-             only:
-              - stage
+          requires: 
+          - approval
+          filters:
+            branches:
+              only:
+               - stage
 
   main-workflow:
     triggers:
