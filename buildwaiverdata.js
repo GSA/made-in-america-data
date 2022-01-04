@@ -188,7 +188,7 @@ function updateReviewedWaivers () {
     console.log('in new data')
     const modified = newData.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
     // * and replace them.
-    console.log(oldData, modified)
+    console.log("oldData", oldData.length, "modified", modified.length)
     const combined = oldData.concat(modified)
     console.log(combined)
     const final = combined.filter((el, idx) => combined.findIndex(obj => obj._id === el._id) === idx)
