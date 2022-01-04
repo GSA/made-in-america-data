@@ -1,7 +1,6 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-
 const fs = require('fs')
 const axios = require('axios')
 const dataDir = '.'
@@ -54,11 +53,12 @@ class DataScript {
           'Content-Type': 'application/json',
         },
       })
-      mapData(result)
+      return result
     } catch (err) {
       console.log('ERROR GETTING DATA FROM FORMS')
     }
   }
+
   covertBase64toUTF8 = ajaxdata => {
     if (ajaxdata.data.encoding === 'base64') {
       console.log('Converting BASE 64 to UTF-8')
@@ -66,7 +66,7 @@ class DataScript {
       let text = buffObj.toString('utf-8')
       ajaxdata.data = JSON.parse(text)
     }
-    this.createMappedData(ajaxdata.data)
+    return ajaxdata.data
   }
 
   createMappedData = ajaxdata => {
@@ -128,8 +128,29 @@ class DataScript {
       return temp
     })
   }
-}
 
+  newWaiversFileCheck = async => {
+    // * if there is no current waivers file in the directory
+    if (!fs.existsSync(`${dataDir}/current-waivers.json`)) {
+      // * go get the data from Forms DB...
+      console.log('ADDING NEW WAIVERS!!!!!!')
+      let result = await this.getData(DATAURL)
+      newData = JSON.parse(
+        fs.readFileSync(`${dataDir}/current-waivers.json`, 'utf-8'),
+      )
+      return result
+    }
+  }
+
+  addNewWaivers = async data => {
+    const diff = newData.filter(n => !oldData?.some(item => n._id === item._id))
+    // * and write them into the new file
+    fs.writeFileSync(`${newData}`, JSON.stringify(diff), 'utf-8')
+    console.log('FINISHED ADDING NEW WAIVERS...')
+    console.log('There are ' + newData.length + ' waivers in the current file')
+    return
+  }
+} //end of datascript
 async function smokeCheck() {
   try {
     console.log('checking if files exist...')
