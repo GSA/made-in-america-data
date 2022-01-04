@@ -27,8 +27,6 @@ async function getData(url) {
       method: 'get',
       headers: {
         'x-token': FORMSKEY,
-        'Authorization': 'Bearer ' + API_KEY,
-        'Content-Type': 'application/json'
       }
     })
     const sha = result.data.sha;
@@ -36,9 +34,9 @@ async function getData(url) {
     // * in order to read the contents and do any type of manipulation
     const mappedData = (ajaxdata) => {
       if(ajaxdata.data.encoding === 'base64') {
-        console.log('Converting BASE 64 to UTF-8') 
-        let buffObj = Buffer.from(ajaxdata.data.content, 'base64') 
-        let text = buffObj.toString('utf-8')      
+        console.log('Converting BASE 64 to UTF-8')
+        let buffObj = Buffer.from(ajaxdata.data.content, 'base64')
+        let text = buffObj.toString('utf-8')
         ajaxdata.data = JSON.parse(text)
       }
       const expectedDuration = {
@@ -59,7 +57,7 @@ async function getData(url) {
         }
         if (temp.data.procurementStage === 'preSolicitation') {
           temp.data.procurementStage = 'Pre-solicitation';
-        } 
+        }
         if (temp.data.waiverCoverage === 'individualWaiver'){
           temp.data.waiverCoverage = 'Individual Waiver';
         }
@@ -93,13 +91,13 @@ async function getData(url) {
         if(temp.data.requestStatus === 'submitted') {
           temp.data.requestStatus = 'Submitted'
         }
-       
+
         return temp
       })
     }
-    
+
    let final = mappedData(result)
-  // * if the sha value isn't undefined, then creating a new key:value pair in the 
+  // * if the sha value isn't undefined, then creating a new key:value pair in the
   // * JSON for the sha value
    if(sha) {
      console.log('including sha value...')
@@ -134,7 +132,7 @@ async function smokeCheck () {
         oldData = JSON.parse(fs.readFileSync(waiversFile, 'utf-8'))
         return;
       })
-    } else { 
+    } else {
       // * But if the file is present, then just assign the oldData variable to the file.
       oldData = JSON.parse(fs.readFileSync(`${dataDir}/waivers-data.json`, 'utf-8'))
       console.log('Smoke Check completed')
@@ -170,7 +168,7 @@ function pushtoRepo(data) {
    * @param data is the current-waviers.json
    * @param '' is the sha value
    * * when pushing to the repo when the file isn't present, you don't need a sha value
-   * * but on updates and deletions a sha value is required 
+   * * but on updates and deletions a sha value is required
    */
    ajaxMethod(data,'')
 }
@@ -184,13 +182,13 @@ function updateReviewedWaivers () {
   console.log('Updating Waivers with new modified date')
   //  * function checks for json waivers that have changed modified data
   const modifiedWaivers = compareJSONsforChangesInModifiedDate(oldData, newData)
-  // * map the currentdata.json and into a new array and find the objects from the returned 
+  // * map the currentdata.json and into a new array and find the objects from the returned
   // * 'compareJSONsforChangesInModifiedDate' function
   if(newData) {
     console.log('in new data')
     const modified = newData.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
     // * and replace them.
-    const combined = modified.concat(oldData)
+    const combined = oldData.concat(modified)
     const final = combined.filter((el, idx) => combined.findIndex(obj => obj._id === el._id) === idx)
     fs.writeFileSync(`${dataDir}/waivers-data.json`, JSON.stringify(final), 'utf-8')
     // * delete the current waiver file as it's not longer needed till the next pull
@@ -198,17 +196,17 @@ function updateReviewedWaivers () {
   }
 }
 
-function compareJSONsforChangesInModifiedDate(prev, current) {    // * return the objects that do not have the same modified date. 
+function compareJSONsforChangesInModifiedDate(prev, current) {    // * return the objects that do not have the same modified date.
      const result = current.filter(({modified}) =>
     //  * ...convert Date object to correctly compare date
       !prev.some(o => new Date(o.modified).getTime() === new Date(modified).getTime())
     );
     return result;
-  
+
 }
 function ajaxMethod(data, shaValue) {
   // * when pushing to github, the data must be encoded to base64 format
-  let buffered = Buffer.from(JSON.stringify(data)).toString('base64') 
+  let buffered = Buffer.from(JSON.stringify(data)).toString('base64')
   //  * and then the commit message, and all data must be stringfied
   const event = new Date(Date.now());
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -227,7 +225,7 @@ function ajaxMethod(data, shaValue) {
       },
       data: jsondata
     };
-  
+
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data))
@@ -235,9 +233,9 @@ function ajaxMethod(data, shaValue) {
       })
       .catch(function (error) {
         /**
-         * ! if there is a 409 error, it means that there is a conflict in that the 
+         * ! if there is a 409 error, it means that there is a conflict in that the
          * ! file already exists and because did not pass the sha value.
-         * ! In order to update/delete, you must do a GET call to the file and THEN perform 
+         * ! In order to update/delete, you must do a GET call to the file and THEN perform
          * ! another PUT request
          */
         if(error.response.status === 409) {
