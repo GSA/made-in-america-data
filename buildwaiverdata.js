@@ -188,7 +188,9 @@ function updateReviewedWaivers () {
     console.log('in new data')
     const modified = newData.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
     // * and replace them.
+    console.log(oldData, modified)
     const combined = oldData.concat(modified)
+    console.log(combined)
     const final = combined.filter((el, idx) => combined.findIndex(obj => obj._id === el._id) === idx)
     fs.writeFileSync(`${dataDir}/waivers-data.json`, JSON.stringify(final), 'utf-8')
     // * delete the current waiver file as it's not longer needed till the next pull
