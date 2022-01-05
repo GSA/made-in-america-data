@@ -1,6 +1,7 @@
 let mockData = require('../test/testfiles/testjson.json')
 let newMockData = require('../test/testfiles/newdatawaiver.json')
 let rawData = require('./testfiles/rawdata')
+const agedOutData = require('./testfiles/agedout.json')
 const base64data = require('./testfiles/base64data.js')
 const sinon = require('sinon')
 const chai = require('chai')
@@ -12,7 +13,6 @@ const testObj = new DataScript()
 
 const axios = require('axios')
 const MockAdapter = require('axios-mock-adapter')
-const nock = require('nock')
 
 const MOCKDATAURL =
   'https://portal-test.forms.gov/mia-test/madeinamericanonavailabilitywaiverrequest/submission?created__gt=2021-10-13&select=state,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage, data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId'
@@ -99,12 +99,17 @@ describe('testing mapping data function', function () {
   })
 })
 
-describe('encoding conversion test', function () {
-  it('should be in utf-8 format', () => {
-    const spy = sinon.spy(testObj, 'covertBase64toUTF8')
-    const result = testObj.covertBase64toUTF8(base64data)
+describe.only('testing concatanation of arrays', function () {
+  it('updated waiver functions', () => {
+    const spy = sinon.spy(testObj, 'updateReviewedWaivers')
+    const result = testObj.updateReviewedWaivers(mockData, newMockData)
     expect(spy.calledOnce).to.be.true
     expect(result).to.be.an('array')
-    expect(result).to.have.lengthOf(2, 'length isnt right in coversion test')
+    expect(result).to.have.lengthOf(5, 'length isnt right in coversion test')
+  })
+  it('primary data should not change', () => {
+    const result = testObj.updateReviewedWaivers(mockData, agedOutData)
+    expect(result).to.be.an('array')
+    expect(result).to.have.lengthOf(3, 'length isnt right on aged out test')
   })
 })

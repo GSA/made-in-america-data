@@ -18,6 +18,7 @@ class DataScript {
   constructor() {
     console.log('initiate')
   }
+
   add(a, b) {
     let result
     result = a + b
@@ -128,19 +129,49 @@ class DataScript {
       return temp
     })
   }
-
-  newWaiversFileCheck = async => {
-    // * if there is no current waivers file in the directory
-    if (!fs.existsSync(`${dataDir}/current-waivers.json`)) {
-      // * go get the data from Forms DB...
-      console.log('ADDING NEW WAIVERS!!!!!!')
-      let result = await this.getData(DATAURL)
-      newData = JSON.parse(
-        fs.readFileSync(`${dataDir}/current-waivers.json`, 'utf-8'),
+  updateReviewedWaivers = (oldData, newData) => {
+    let temp = []
+    temp = oldData
+    console.log('Updating Waivers with new modified date')
+    //  * function checks for json waivers that have changed modified data
+    const modifiedWaivers = compareJSONsforChangesInModifiedDate(temp, newData)
+    if (newData) {
+      console.log('in new data')
+      const modified = temp.map(
+        obj => modifiedWaivers.find(o => obj._id === o._id) || obj,
       )
-      return result
+      // * and replace them.
+      const combined = newData.concat(modified)
+
+      const final = combined.filter(
+        (el, idx) => combined.findIndex(obj => obj._id === el._id) === idx,
+      )
+
+      oldData = [...final]
+
+      fs.writeFileSync(
+        `${dataDir}/waivers-data.json`,
+        JSON.stringify(oldData),
+        'utf-8',
+      )
+      // * delete the current waiver file as it's not longer needed till the next pull
+      // fs.unlinkSync(`${dataDir}/current-waivers.json`)
+      return oldData
     }
   }
+
+  // newWaiversFileCheck = async => {
+  //   // * if there is no current waivers file in the directory
+  //   if (!fs.existsSync(`${dataDir}/current-waivers.json`)) {
+  //     // * go get the data from Forms DB...
+  //     console.log('ADDING NEW WAIVERS!!!!!!')
+  //     let result = await this.getData(DATAURL)
+  //     newData = JSON.parse(
+  //       fs.readFileSync(`${dataDir}/current-waivers.json`, 'utf-8'),
+  //     )
+  //     return result
+  //   }
+  // }
 
   addNewWaivers = async data => {
     const diff = newData.filter(n => !oldData?.some(item => n._id === item._id))
