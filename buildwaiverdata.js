@@ -155,7 +155,7 @@ class DataScript {
         'utf-8',
       )
       // * delete the current waiver file as it's not longer needed till the next pull
-      // fs.unlinkSync(`${dataDir}/current-waivers.json`)
+      fs.unlinkSync(`${dataDir}/current-waivers.json`)
       return oldData
     }
   }

@@ -113,7 +113,7 @@ describe('testing mapping data function', function () {
   })
 })
 
-describe('testing concatanation of arrays', function () {
+describe.only('testing concatanation of arrays', function () {
   it('updated waiver functions', () => {
     const spy = sinon.spy(testObj, 'updateReviewedWaivers')
     const result = testObj.updateReviewedWaivers(mockData, newMockData)
@@ -121,13 +121,13 @@ describe('testing concatanation of arrays', function () {
     expect(result).to.be.an('array')
     expect(result).to.have.lengthOf(5, 'length isnt right in coversion test')
   })
-  it('primary data should not change', () => {
+  it('old data should not change', () => {
     const result = testObj.updateReviewedWaivers(mockData, agedOutData)
     expect(result).to.be.an('array')
     expect(result).to.have.lengthOf(3, 'length isnt right on aged out test')
   })
 })
-describe.only('testing adding new waivers', function () {
+describe('testing adding new waivers', function () {
   it('should add new waivers to old waivers', done => {
     let mock = sinon.mock(testObj)
     let expectation = mock.expects('getData')
