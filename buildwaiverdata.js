@@ -159,27 +159,37 @@ class DataScript {
       return oldData
     }
   }
-
-  // newWaiversFileCheck = async => {
-  //   // * if there is no current waivers file in the directory
-  //   if (!fs.existsSync(`${dataDir}/current-waivers.json`)) {
-  //     // * go get the data from Forms DB...
-  //     console.log('ADDING NEW WAIVERS!!!!!!')
-  //     let result = await this.getData(DATAURL)
-  //     newData = JSON.parse(
-  //       fs.readFileSync(`${dataDir}/current-waivers.json`, 'utf-8'),
-  //     )
-  //     return result
-  //   }
-  // }
-
-  addNewWaivers = async data => {
-    const diff = newData.filter(n => !oldData?.some(item => n._id === item._id))
-    // * and write them into the new file
-    fs.writeFileSync(`${newData}`, JSON.stringify(diff), 'utf-8')
-    console.log('FINISHED ADDING NEW WAIVERS...')
-    console.log('There are ' + newData.length + ' waivers in the current file')
-    return
+  addNewWaivers = oldData => {
+    if (!fs.existsSync(`${dataDir}/current-waivers.json`)) {
+      // * go get the data from Forms DB...
+      getData(DATAURL).then(res => {
+        console.log('response', res)
+        // * and write it to json
+        console.log('ADDING NEW WAIVERS!!!!!!')
+        fs.writeFileSync(
+          `${dataDir}/current-waivers.json`,
+          JSON.stringify(response),
+          'utf-8',
+          null,
+          2,
+        )
+        // * and lets call it newData
+        newData = JSON.parse(
+          fs.readFileSync(`${dataDir}/current-waivers.json`, 'utf-8'),
+        )
+        // * filter out the data that does no exist in the old data
+        const diff = newData.filter(
+          n => !oldData?.some(item => n._id === item._id),
+        )
+        // * and write them into the new file
+        fs.writeFileSync(`${newData}`, JSON.stringify(diff), 'utf-8')
+        console.log('FINISHED ADDING NEW WAIVERS...')
+        console.log(
+          'There are ' + newData.length + ' waivers in the current file',
+        )
+        return newData
+      })
+    }
   }
 } //end of datascript
 async function smokeCheck() {
