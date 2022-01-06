@@ -20,12 +20,10 @@ jobs:
           command: |
            npm install
            node buildwaiverdata.js
-      # - run:
-      #     name: "run csv script"
-      #     command: |
-      #      npm install json2csv
-      #      npm install dotenv
-      #      node buildcsvdata.js
+       - run:
+           name: "run csv script"
+           command: |
+            node buildcsvdata.js
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
