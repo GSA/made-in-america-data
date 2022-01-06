@@ -20,9 +20,9 @@ jobs:
           command: |
            npm install
            node buildwaiverdata.js
-       - run:
-           name: "run csv script"
-           command: |
+      - run:
+          name: "run csv script"
+          command: |
             node buildcsvdata.js
 
 # Invoke jobs via workflows
