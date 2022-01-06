@@ -1,0 +1,26 @@
+{
+  "name": "made-in-america-data",
+  "version": "1.0.0",
+  "description": "# Description - This repository contains a script, 'buildwaiverdata.js' that pulls the public field information from the Forms.gov API for MIA, and writes it to a JSON file 'waivers-data.json', as well as a secondary 'buildcsvdata.js' script which converts the data in the 'waivers-data.json' file into a CSV file 'waiverscsv.csv'. The angular website code from the madeinamerica.gov site pulls information from the 'waivers-data.json' on demand.",
+  "main": "buildcsvdata.js",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "dotenv": "^10.0.0",
+    "json2csv": "^5.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GSA/made-in-america-data.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GSA/made-in-america-data/issues"
+  },
+  "homepage": "https://github.com/GSA/made-in-america-data#readme"
+}
