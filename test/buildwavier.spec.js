@@ -8,9 +8,9 @@ const chai = require('chai')
 const chaiFiles = require('chai-files')
 
 chai.use(require('chai-json'))
+chai.use(chaiFiles)
 const expect = chai.expect
 var file = chaiFiles.file
-chai.use(chaiFiles)
 
 const DataScript = require('../buildwaiverdata')
 const testObj = new DataScript()
@@ -31,22 +31,25 @@ describe('the add function', function () {
 
 describe('test suite for checking files', function () {
   let testFilesStub
-  this.beforeAll(() => {
-    testFilesStub = sinon.stub(testObj, 'checkifWaiverFileExists')
-  })
+  testFilesStub = sinon.stub(testObj, 'checkifWaiverFileExists')
 
-  afterEach(() => {
-    sinon.restore()
-  })
-  it('Stub the check files - checking current file exist', () => {
-    testFilesStub.withArgs(mockData).returns(mockData)
+  it('Stub the check files - checking waivers-file.json exist', () => {
+    testFilesStub.returns(mockData)
     expect(mockData).to.exist
     expect(mockData).to.be.an('array')
+    expect(file('waivers-data.json')).to.exist
   })
-  it.skip('create an empty json file if no file exists', () => {
-    let result = testFilesStub.withArgs().returns([])
-    console.log('result', result)
-    expect(file('index.js')).to.exist
+})
+
+describe('test suite for checking new files', function () {
+  let newfileStub
+  newfileStub = sinon.stub(testObj, 'newWaiverFileCheck')
+
+  it('Stub the check files - checking current-waivers.json exist', () => {
+    newfileStub.withArgs(newMockData).returns(newMockData)
+    expect(newMockData).to.exist
+    expect(newMockData).to.be.an('array')
+    expect(file('current-waivers.json')).to.not.exist
   })
 })
 
@@ -55,21 +58,21 @@ describe(' testing the getData function', () => {
   const mock = new MockAdapter(axios)
   let fakedata
 
-  before(async () => {
+  beforeEach(async () => {
     mock.onGet(MOCKDATAURL).reply(200, mockData)
     fakedata = await testObj.getData(MOCKDATAURL)
   })
 
-  after(() => {
-    mock.reset()
+  afterEach(() => {
+    sinon.reset()
   })
 
   it('should return array of data', async done => {
-    expect(fakedata.data).to.be.an('array')
-    expect(fakedata.data).to.have.lengthOf(3, 'length isnt right')
+    expect(fakedata).to.be.an('array')
+    expect(fakedata).to.have.lengthOf(3, 'length isnt right')
     done()
   })
-  it('should only be called once', async done => {
+  it('should only be called once', done => {
     expect(spy.calledOnce).to.be.true
     done()
   })
@@ -87,52 +90,39 @@ describe('encoding conversion test', function () {
 
 describe('testing mapping data function', function () {
   let result
-  before(() => {
+  beforeEach(() => {
     result = testObj.createMappedData(rawData)
   })
   it('should convert forms data to readable text', () => {
-    expect(result[0].data).to.have.deep.property(
-      'procurementStage',
-      'Post-solicitation',
-    )
-    expect(result[0].data).to.have.deep.property(
-      'waiverCoverage',
-      'Individual Waiver',
-    )
+    expect(result[0].data).to.have.deep.property('procurementStage', 'Post-solicitation')
+    expect(result[0].data).to.have.deep.property('waiverCoverage', 'Individual Waiver')
     expect(result[0].data).to.have.deep.property(
       'expectedMaximumDurationOfTheRequestedWaiver',
       'Instant Delivery Only',
     )
   })
   it('test omb determination and request status text format', () => {
-    expect(result[0].data).to.have.deep.property(
-      'ombDetermination',
-      'Consistent with Policy',
-    )
+    expect(result[0].data).to.have.deep.property('ombDetermination', 'Consistent with Policy')
     expect(result[0].data).to.have.deep.property('requestStatus', 'Reviewed')
   })
 })
 
-describe.only('testing concatanation of arrays', function () {
-  it('updated waiver functions', () => {
-    const spy = sinon.spy(testObj, 'updateReviewedWaivers')
-    const result = testObj.updateReviewedWaivers(mockData, newMockData)
-    expect(spy.calledOnce).to.be.true
-    expect(result).to.be.an('array')
-    expect(result).to.have.lengthOf(5, 'length isnt right in coversion test')
-  })
-  it('old data should not change', () => {
+describe('testing concatanation of arrays', function () {
+  // it('old data should not change', () => {
+  //   const result = testObj.updateReviewedWaivers(mockData, agedOutData)
+  //   expect(result).to.be.an('array')
+  //   expect(result).to.have.lengthOf(3, 'length isnt right on aged out test')
+  // })
+  it('mock the unlink file', () => {
+    const mock = sinon.mock(testObj)
+    const expectation = mock.expects('unlinkFile')
+    expectation.exactly(1)
     const result = testObj.updateReviewedWaivers(mockData, agedOutData)
+    mock.verify()
     expect(result).to.be.an('array')
     expect(result).to.have.lengthOf(3, 'length isnt right on aged out test')
   })
 })
-describe('testing adding new waivers', function () {
-  it('should add new waivers to old waivers', done => {
-    let mock = sinon.mock(testObj)
-    let expectation = mock.expects('getData')
-    expectation.exactly(1)
-    testObj.addNewWaivers(mockData)
-    done()
-  })
-})
+// describe.only('testing if file exists', function () {
+
+// })
