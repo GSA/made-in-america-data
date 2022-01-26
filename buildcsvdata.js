@@ -3,7 +3,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const fs = require('fs')
 const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH } = process.env
-const WAIVERS_CSV_URL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waiverscsv.csv?ref=${CIRCLE_BRANCH}`
+// const WAIVERS_CSV_URL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waiverscsv.csv?ref=${CIRCLE_BRANCH}`
+const WAIVERS_CSV_URL = `https://api.github.com/repos/GSA/made-in-america-data/contents/testwaivers.csv?ref=${CIRCLE_BRANCH}`
+
 const JSONtoCSV = require('json2csv')
 const {
   transforms: { unwind },
@@ -28,7 +30,7 @@ const fields = [
   'data.procurementTitle',
   'data.summaryOfProcurement',
   'data.sourcesSoughtOrRfiIssued',
-  'data.piids.piid',
+  'data.piids',
   'data.isPricePreferenceIncluded',
   'data.waiverCoverage',
   'data.waiverRationaleSummary',
@@ -38,8 +40,7 @@ const fields = [
   'data.solicitationId',
   'data.countriesOfOriginAndUSContent',
 ]
-const transforms = [unwind({ paths: ['data.piids'] })]
-const opts = { fields, transforms }
+const opts = { fields }
 function convertJSONToCSV(jsondata) {
   try {
     console.log('Converting JSON')
