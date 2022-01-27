@@ -30,7 +30,8 @@
     "test": "mocha test",
     "coverage": "nyc --reporter=text --reporter=html npm run test",
     "precommit": "npx lint-staged --allow-empty",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "prettier" : "npx prettier --write"
   },
   "repository": {
     "type": "git",
