@@ -15,7 +15,7 @@ class DataScript {
     console.log('initiate')
   }
 
-  add(a, b) {
+  add(a b) {
     let result
     result = a + b
     return result
