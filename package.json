@@ -20,7 +20,7 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^7.0.4",
+    "husky": "^7.0.0",
     "lint-staged": "^12.3.2",
     "mocha": "^9.1.3",
     "nyc": "^15.1.0",
@@ -34,11 +34,12 @@
     "postinstall": "husky install"
   },
   "lint-staged": {
-    "*.{js, json}": [
+    "*.js": [
       "npx prettier --write",
-      "npx eslint"
+      "npx eslint",
+      "npx test"
     ],
-    "*.{md}": [
+    "*.{md, json}": [
       "npx prettier --write"
     ]
   },
