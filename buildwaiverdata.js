@@ -17,8 +17,10 @@ class DataScript {
 
   add(a, b) {
     let result
+
+
     result = a + b
-    return result
+        return result
   }
 
   runScript = async () => {
