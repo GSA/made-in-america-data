@@ -16,7 +16,7 @@ class DataScript {
   }
 
   add(a
-    b) {
+     b) {
     var result
 
 
