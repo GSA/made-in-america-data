@@ -30,8 +30,16 @@
     "test": "mocha test",
     "coverage": "nyc --reporter=text --reporter=html npm run test",
     "precommit": "npx lint-staged --allow-empty",
-    "postinstall": "husky install",
-    "format": "npx prettier --write ."
+    "postinstall": "husky install"
+  },
+  "lint-staged": {
+    "*.{js, json}": [
+      "npx prettier --write",
+      "npx eslint"
+    ],
+    "*.{md}": [
+      "npx prettier --write"
+    ]
   },
   "repository": {
     "type": "git",
