@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 const fs = require('fs')
 const axios = require('axios')
 let waiversFile = __dirname + '/waivers-data.json'
-t newwaiversFile = __dirname + '/current-waivers.json'
+let newwaiversFile = __dirname + '/current-waivers.json'
 const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH } = process.env
 const DATAURL =
   'https://portal.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId,data.countriesOfOriginAndUSContent'
@@ -15,14 +15,10 @@ class DataScript {
     console.log('initiate')
   }
 
-  add(a,
-
-      ,b) {
-    var result
-
-
+  add(a, b) {
+    let result
     result = a + b
-        return result
+    return result
   }
 
   runScript = async () => {
