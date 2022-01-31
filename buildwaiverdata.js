@@ -1,13 +1,16 @@
+/* eslint-disable no-underscore-dangle */
 if (process.env.NODE_ENV !== 'production') {
+  // eslint-disable-next-line global-require
   require('dotenv').config()
 }
 const fs = require('fs')
 const axios = require('axios')
-let waiversFile = __dirname + '/waivers-data.json'
-let newwaiversFile = __dirname + '/current-waivers.json'
+
+let waiversFile = `${__dirname}/waivers-data.json`
+const newwaiversFile = `${__dirname}/current-waivers.json`
 const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH } = process.env
 const DATAURL =
-  'https://portal.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId,data.countriesOfOriginAndUSContent'
+  'https://submission.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId,data.countriesOfOriginAndUSContent'
 const GITHUBURL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waivers-data.json?ref=${CIRCLE_BRANCH}`
 
 class DataScript {
@@ -15,15 +18,15 @@ class DataScript {
     console.log('initiate')
   }
 
-  add(a, b) {
-    let result
-    result = a + b
+  static add(a, b) {
+    const result = a + b
     return result
   }
 
-  runScript = async () => {
-    let formsdata, newformdata
-    let fileCheck = this.checkifWaiverFileExists(waiversFile) //returns true or false
+  async runScript() {
+    let formsdata
+    let newformdata
+    const fileCheck = DataScript.checkifWaiverFileExists(waiversFile) // returns true or false
     if (fileCheck === false) {
       formsdata = await this.getData(DATAURL)
       const cleanedFormData = this.createMappedData(formsdata)
@@ -32,78 +35,67 @@ class DataScript {
       return
     }
 
-    //if current.json already exists
+    // if current.json already exists
     formsdata = JSON.parse(fs.readFileSync(waiversFile, 'utf-8', null, 2))
     const newWaiverFileCheck = this.newWaiverFileCheck(newwaiversFile) // should return true
     if (newWaiverFileCheck === true) {
-      newformdata = await this.getData(DATAURL)
+      newformdata = await DataScript.getData(DATAURL)
       const newCleanedFormData = this.createMappedData(formsdata)
       fs.writeFileSync(newwaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
     }
-    let newfile = this.addNewWaivers(formsdata, newformdata)
-    let completedData = this.updateReviewedWaivers(formsdata, newfile)
-    console.log('There are a total of ' + completedData.length + ' waivers being submitted')
+    const newfile = DataScript.addNewWaivers(formsdata, newformdata)
+    const completedData = this.updateReviewedWaivers(formsdata, newfile)
+    console.log(`There are a total of ${completedData.length} waivers being submitted`)
     this.ajaxMethod(completedData, '')
   }
 
-  checkifWaiverFileExists = waiverdata => {
+  static checkifWaiverFileExists(waiverdata) {
     if (!fs.existsSync(waiverdata)) {
       console.log('No file present, creating file...')
-      //assign it
+      // assign it
       waiversFile = waiverdata
       // ...and create it
-      fs.writeFileSync(waiversFile, JSON.stringify([]), err => {
-        if (err) {
-          console.log('err', err)
-          return err
-        } else {
-          console.log('data written to file')
-        }
-      })
+      fs.writeFileSync(waiversFile, JSON.stringify([]), 'utf-8')
+      console.log('data written to file')
       return false
     }
     return true
   }
 
-  newWaiverFileCheck = newdwaiverdata => {
+  newWaiverFileCheck(newdwaiverdata) {
     if (!fs.existsSync(newdwaiverdata)) {
       console.log('Getting forms current data...')
-      //assign it
-      newwaiversFile = newdwaiverdata
+      // assign it
+      this.newwaiversFile = newdwaiverdata
       // ...and create it
-      fs.writeFileSync(newwaiversFile, JSON.stringify([]), err => {
-        if (err) {
-          console.log('err', err)
-          return err
-        } else {
-          console.log('current waiver file written')
-        }
-      })
+      fs.writeFileSync(newwaiversFile, JSON.stringify([]), 'utf-8')
+
       return true
     }
     return false
   }
 
-  addNewWaivers = (oldData, newData) => {
+  static addNewWaivers(oldData, newData) {
     console.log('ADDING NEW WAIVERS!!!!!!')
-    newData = JSON.parse(fs.readFileSync(newwaiversFile, 'utf-8'))
+    this.newData = JSON.parse(fs.readFileSync(newwaiversFile, 'utf-8'))
     // * filter out the data that does no exist in the old data
-    const diff = newData.filter(n => !oldData?.some(item => n._id === item._id))
+    // eslint-disable-next-line no-underscore-dangle
+    const diff = newData.filter(n => !oldData.some(item => n._id === item._id))
     // * and write them into the new file
     fs.writeFileSync(newwaiversFile, JSON.stringify(diff), 'utf-8')
     console.log('FINISHED ADDING NEW WAIVERS...')
-    console.log('There are ' + newData.length + ' waivers in the current file')
-    return newData
+    console.log(`There are ${newData.length} waivers in the current file`)
+    return this.newData
   }
 
-  getData = async url => {
+  static async getData(url) {
     // * result is the data from Forms and the token is the API key
     try {
       const result = await axios(url, {
         method: 'get',
         headers: {
           'x-token': FORMSKEY,
-          Authorization: 'Bearer ' + API_KEY,
+          Authorization: `Bearer ${API_KEY}`,
           'Content-Type': 'application/json',
         },
       })
@@ -115,17 +107,17 @@ class DataScript {
     }
   }
 
-  covertBase64toUTF8 = ajaxdata => {
+  covertBase64toUTF8(ajaxdata) {
     console.log('Converting BASE 64 to UTF-8')
-    let buffObj = Buffer.from(ajaxdata.data.content, 'base64')
-    let text = buffObj.toString('utf-8')
-    ajaxdata.data = JSON.parse(text)
+    const buffObj = Buffer.from(ajaxdata.data.content, 'base64')
+    const text = buffObj.toString('utf-8')
+    this.ajaxdata.data = JSON.parse(text)
     return ajaxdata.data
   }
 
-  createMappedData = ajaxdata => {
+  createMappedData(ajaxdata) {
     if (ajaxdata.encoding === 'base64') {
-      ajaxdata.data = this.covertBase64toUTF8(ajaxdata)
+      this.ajaxdata.data = this.covertBase64toUTF8(ajaxdata)
     }
 
     const expectedDuration = {
@@ -139,7 +131,8 @@ class DataScript {
     }
     // * ...string manipulation for better readable text for the front end
     return ajaxdata.map(item => {
-      let temp = Object.assign({}, item)
+      // eslint-disable-next-line node/no-unsupported-features/es-syntax
+      const temp = { ...item }
 
       temp.data.expectedMaximumDurationOfTheRequestedWaiver =
         expectedDuration[item.data.expectedMaximumDurationOfTheRequestedWaiver]
@@ -186,12 +179,13 @@ class DataScript {
       return temp
     })
   }
-  updateReviewedWaivers = (oldData, newData) => {
+
+  updateReviewedWaivers(oldData, newData) {
     let temp = []
     temp = oldData
     console.log('Updating Waivers with new modified date')
     //  * function checks for json waivers that have changed modified data
-    const modifiedWaivers = this.compareJSONsforChangesInModifiedDate(temp, newData)
+    const modifiedWaivers = DataScript.compareJSONsforChangesInModifiedDate(temp, newData)
     if (newData) {
       console.log('in new data')
       const modified = temp.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
@@ -202,19 +196,21 @@ class DataScript {
         (el, idx) => combined.findIndex(obj => obj._id === el._id) === idx,
       )
 
-      oldData = [...final]
+      this.oldData = [...final]
 
       fs.writeFileSync(waiversFile, JSON.stringify(oldData), 'utf-8')
       // * delete the current waiver file as it's not longer needed till the next pull
-      this.unlinkFile()
+      DataScript.unlinkFile()
       return oldData
     }
+    return oldData
   }
-  unlinkFile = () => {
+
+  static unlinkFile() {
     fs.unlinkSync(newwaiversFile)
   }
 
-  compareJSONsforChangesInModifiedDate = (prev, current) => {
+  static compareJSONsforChangesInModifiedDate(prev, current) {
     // * return the objects that do not have the same modified date.
     const result = current.filter(
       ({ modified }) =>
@@ -223,15 +219,17 @@ class DataScript {
     )
     return result
   }
-  updateRepo = async data => {
+
+  async updateRepo(data) {
     console.log('getting SHA Value for Update')
     const response = await this.getData(GITHUBURL)
     const shaValue = response.sha
     this.ajaxMethod(data, shaValue)
   }
-  ajaxMethod = (data, shaValue) => {
+
+  ajaxMethod(data, shaValue) {
     // * when pushing to github, the data must be encoded to base64 format
-    let buffered = Buffer.from(JSON.stringify(data)).toString('base64')
+    const buffered = Buffer.from(JSON.stringify(data)).toString('base64')
     //  * and then the commit message, and all data must be stringfied
     const event = new Date(Date.now())
     const options = {
@@ -241,33 +239,32 @@ class DataScript {
       day: 'numeric',
     }
 
-    let jsondata = JSON.stringify({
-      message:
-        'file uploaded on ' +
-        event.toLocaleDateString(undefined, options) +
-        ' at ' +
-        event.toLocaleTimeString('en-US'),
+    const jsondata = JSON.stringify({
+      message: `file uploaded on ${event.toLocaleDateString(
+        undefined,
+        options,
+      )} at ${event.toLocaleTimeString('en-US')}`,
       content: buffered,
       sha: shaValue,
       branch: CIRCLE_BRANCH,
     })
 
-    let config = {
+    const config = {
       method: 'put',
       url: GITHUBURL,
       headers: {
-        Authorization: 'Bearer ' + API_KEY,
+        Authorization: `Bearer ${API_KEY}`,
         'Content-Type': 'application/json',
       },
       data: jsondata,
     }
 
     axios(config)
-      .then(function (response) {
+      .then(response => {
         console.log(JSON.stringify(response.data))
         return JSON.stringify(response.data)
       })
-      .catch(function (error) {
+      .catch(error => {
         /**
          * ! if there is a 409 error, it means that there is a conflict in that the
          * ! file already exists and because did not pass the sha value.
@@ -276,15 +273,15 @@ class DataScript {
          */
         if (error.response.status === 409) {
           console.log('409 --- waviers.json already exists...going to get sha value to update!')
-          runner.updateRepo(data)
+          this.updateRepo(data)
         } else {
           console.log('error', error)
         }
       })
   }
 
-  pushtoRepo = data => {
-    console.log('There are a total of ' + data.length + ' waviers being submitted')
+  pushtoRepo(data) {
+    console.log(`There are a total of ${data.length} waviers being submitted`)
     /** ajaxMethod
      * @param data is the current-waviers.json
      * @param '' is the sha value
@@ -293,7 +290,8 @@ class DataScript {
      */
     this.ajaxMethod(data, '')
   }
-} //end of datascript
+}
+// end of datascript
 const runner = new DataScript()
 runner.runScript()
 module.exports = DataScript
