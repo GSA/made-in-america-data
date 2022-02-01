@@ -36,8 +36,7 @@
   "lint-staged": {
     "*.js": [
       "npx prettier --write",
-      "npx eslint",
-      "npx test"
+      "npx eslint"
     ],
     "*.{md, json}": [
       "npx prettier --write"

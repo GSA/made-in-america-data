@@ -32,6 +32,7 @@ describe('the add function', function () {
 describe('test suite for checking files', function () {
   let testFilesStub
   testFilesStub = sinon.stub(testObj, 'checkifWaiverFileExists')
+  console.log(testFilesStub)
 
   it('Stub the check files - checking waivers-file.json exist', () => {
     testFilesStub.returns(mockData)
@@ -108,11 +109,6 @@ describe('testing mapping data function', function () {
 })
 
 describe('testing concatanation of arrays', function () {
-  // it('old data should not change', () => {
-  //   const result = testObj.updateReviewedWaivers(mockData, agedOutData)
-  //   expect(result).to.be.an('array')
-  //   expect(result).to.have.lengthOf(3, 'length isnt right on aged out test')
-  // })
   it('mock the unlink file', () => {
     const mock = sinon.mock(testObj)
     const expectation = mock.expects('unlinkFile')
@@ -123,6 +119,3 @@ describe('testing concatanation of arrays', function () {
     expect(result).to.have.lengthOf(3, 'length isnt right on aged out test')
   })
 })
-// describe.only('testing if file exists', function () {
-
-// })
