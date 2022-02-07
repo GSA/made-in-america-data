@@ -1,5 +1,4 @@
 if (process.env.NODE_ENV !== 'production') {
-  // eslint-disable-next-line global-require
   require('dotenv').config()
 }
 
@@ -69,7 +68,6 @@ function deleteFile(data, sha, url) {
   axios(config)
     .then(() => {
       console.log('DONE DELETING')
-      // eslint-disable-next-line no-use-before-define
       convertJSONToCSV(waiversFile)
     })
     .catch((error) => {
@@ -77,7 +75,6 @@ function deleteFile(data, sha, url) {
     })
 }
 
-// eslint-disable-next-line consistent-return
 async function getShaValue(url) {
   console.log(`Getting data again...in the ${CIRCLE_BRANCH} branch`)
   try {
