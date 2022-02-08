@@ -2,7 +2,7 @@
 
 # Description
 
-- This repository contains a script, `buildwaiverdata.js` that pulls the public field information from the Forms.gov API for MIA, and writes it to a JSON file `waivers-data.json`, as well as a secondary `buildcsvdata.js` script which converts the data in the `waivers-data.json` file into a CSV file `waiverscsv.csv`. The angular website code from the madeinamerica.gov site pulls information from the `waivers-data.json` on demand.
+- This repository contains a script, `buildwaiverdata.js` that pulls the public field information from the Forms.gov API for MIA, and writes it to a JSON file `waivers-data.json`, as well as a secondary `buildcsvdata.js` script which converts the data in the `waivers-data.json` file into a CSV file `waivers.csv`. The angular website code from the madeinamerica.gov site pulls information from the `waivers-data.json` on demand.
 
 # CircleCI
 
