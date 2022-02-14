@@ -222,7 +222,7 @@ class DataScript {
 
   async updateRepo(data) {
     console.log('getting SHA Value for Update')
-    const response = await this.getData(GITHUBURL)
+    const response = await DataScript.getData(GITHUBURL)
     const shaValue = response.sha
     this.ajaxMethod(data, shaValue)
   }
@@ -261,6 +261,7 @@ class DataScript {
 
     axios(config)
       .then(response => {
+        console.log('COMPLETED')
         console.log(JSON.stringify(response.data))
         return JSON.stringify(response.data)
       })
