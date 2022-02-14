@@ -10,24 +10,21 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: node:17.0-buster-slim
-    
+
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - run:
-          name: "run json script"
+          name: 'run json script'
           command: |
-           npm install axios
-           npm install dotenv 
-           node buildwaiverdata.js
+            npm installl 
+            node buildwaiverdata.js
       - run:
-          name: "run csv script"
+          name: 'run csv script'
           command: |
-           npm install json2csv
-           npm install dotenv
-           node buildcsvdata.js
-      
+            node buildcsvdata.js
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
@@ -38,14 +35,14 @@ workflows:
           filters:
             branches:
               only:
-               - develop
+                - develop
       - run-script:
-          requires: 
-          - approval
+          requires:
+            - approval
           filters:
             branches:
               only:
-               - develop
+                - develop
 
   stage-workflow:
     jobs:
@@ -54,19 +51,19 @@ workflows:
           filters:
             branches:
               only:
-               - stage
+                - stage
       - run-script:
-          requires: 
-          - approval
+          requires:
+            - approval
           filters:
             branches:
               only:
-               - stage
+                - stage
 
   main-workflow:
     triggers:
       - schedule:
-          cron: "0 11,23 * * *"
+          cron: '0 11,23 * * *'
           filters:
             branches:
               only:
