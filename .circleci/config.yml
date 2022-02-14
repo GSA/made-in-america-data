@@ -16,12 +16,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "run json script"
+          name: 'run json script'
           command: |
-           npm install
-           node buildwaiverdata.js
+            npm install
+            node buildwaiverdata.js
       - run:
-          name: "run csv script"
+          name: 'run csv script'
           command: |
             node buildcsvdata.js
 
@@ -35,27 +35,35 @@ workflows:
           filters:
             branches:
               only:
-               - develop
+                - develop
       - run-script:
           requires:
           - approval
           filters:
             branches:
               only:
-               - develop
+                - develop
 
   stage-workflow:
     jobs:
+      - approval:
+          type: approval
+          filters:
+            branches:
+              only:
+                - stage
       - run-script:
-         filters:
-           branches:
-             only:
-              - stage
+          requires:
+            - approval
+          filters:
+            branches:
+              only:
+                - stage
 
   main-workflow:
     triggers:
       - schedule:
-          cron: "0 11,23 * * *"
+          cron: '0 11,23 * * *'
           filters:
             branches:
               only:
