@@ -121,7 +121,6 @@ async function CSVajaxMethod(data, shaValue, url) {
   axios(config)
     .then((response) => {
       console.log('DONE')
-      fs.unlinkSync('./waivers.csv')
       console.log(JSON.stringify(response.data))
       return JSON.stringify(response.data)
     })

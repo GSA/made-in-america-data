@@ -178,11 +178,12 @@ async function addNewWaivers() {
       const diff = newData.filter(
         (n) => !oldData?.some((item) => n._id === item._id)
       )
+      const combined = [...newData, ...diff]
       // * and write them into the new file
-      fs.writeFileSync(`${newData}`, JSON.stringify(diff), 'utf-8')
+      fs.writeFileSync(`${dataDir}/current-waivers.json`, JSON.stringify(combined), 'utf-8')
       console.log('FINISHED ADDING NEW WAIVERS...')
       console.log(
-        'There are ' + newData.length + ' waivers in the current file'
+        'There are ' + combined.length + ' waivers in the current file'
       )
       return
     })
