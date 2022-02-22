@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const fs = require('fs')
 
-const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH } = process.env
+const { GH_API_KEY: API_KEY, CIRCLE_BRANCH } = process.env
 const WAIVERS_CSV_URL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waivers.csv?ref=${CIRCLE_BRANCH}`
 
 const JSONtoCSV = require('json2csv')
