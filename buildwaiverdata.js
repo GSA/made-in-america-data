@@ -1,3 +1,6 @@
+/* eslint-disable no-underscore-dangle */
+// in several places we reference keys that have dangling underscore from the
+// response, ie. _id
 if (process.env.NODE_ENV !== 'production') {
   // eslint-disable-next-line global-require
   require('dotenv').config()
@@ -73,7 +76,6 @@ class DataScript {
     console.log('ADDING NEW WAIVERS!!!!!!')
     this.newData = JSON.parse(fs.readFileSync(newwaiversFile, 'utf-8'))
     // * filter out the data that does no exist in the old data
-    // eslint-disable-next-line no-underscore-dangle
     const diff = newData.filter(n => !oldData.some(item => n._id === item._id))
     // * and write them into the new file
     fs.writeFileSync(newwaiversFile, JSON.stringify(diff), 'utf-8')
@@ -180,13 +182,11 @@ class DataScript {
     const modifiedWaivers = DataScript.compareJSONsforChangesInModifiedDate(temp, newData)
     if (newData) {
       console.log('in new data')
-      // eslint-disable-next-line no-underscore-dangle
       const modified = temp.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
       // * and replace them.
       const combined = newData.concat(modified)
 
       const final = combined.filter(
-        // eslint-disable-next-line no-underscore-dangle
         (el, idx) => combined.findIndex(obj => obj._id === el._id) === idx,
       )
 
