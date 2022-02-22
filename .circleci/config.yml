@@ -38,7 +38,7 @@ workflows:
                 - develop
       - run-script:
           requires:
-          - approval
+            - approval
           filters:
             branches:
               only:
