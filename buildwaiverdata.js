@@ -131,7 +131,6 @@ class DataScript {
     }
     // * ...string manipulation for better readable text for the front end
     return ajaxdata.map(item => {
-      // eslint-disable-next-line node/no-unsupported-features/es-syntax
       const temp = { ...item }
 
       temp.data.expectedMaximumDurationOfTheRequestedWaiver =
