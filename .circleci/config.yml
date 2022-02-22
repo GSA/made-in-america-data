@@ -18,7 +18,7 @@ jobs:
       - run:
           name: 'run json script'
           command: |
-            npm installl 
+            npm install
             node buildwaiverdata.js
       - run:
           name: 'run csv script'
@@ -43,22 +43,6 @@ workflows:
             branches:
               only:
                 - develop
-
-  stage-workflow:
-    jobs:
-      - approval:
-          type: approval
-          filters:
-            branches:
-              only:
-                - stage
-      - run-script:
-          requires:
-            - approval
-          filters:
-            branches:
-              only:
-                - stage
 
   main-workflow:
     triggers:
