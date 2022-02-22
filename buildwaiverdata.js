@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 if (process.env.NODE_ENV !== 'production') {
   // eslint-disable-next-line global-require
   require('dotenv').config()
@@ -187,11 +186,13 @@ class DataScript {
     const modifiedWaivers = DataScript.compareJSONsforChangesInModifiedDate(temp, newData)
     if (newData) {
       console.log('in new data')
+      // eslint-disable-next-line no-underscore-dangle
       const modified = temp.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
       // * and replace them.
       const combined = newData.concat(modified)
 
       const final = combined.filter(
+        // eslint-disable-next-line no-underscore-dangle
         (el, idx) => combined.findIndex(obj => obj._id === el._id) === idx,
       )
 
