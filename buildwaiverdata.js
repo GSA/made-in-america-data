@@ -93,7 +93,6 @@ class DataScript {
           'Content-Type': 'application/json',
         },
       })
-      // console.log('result', result)
       return result.data
     } catch (err) {
       console.log('ERROR GETTING DATA FROM FORMS')
