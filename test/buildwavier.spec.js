@@ -22,13 +22,6 @@ const { afterEach } = require('mocha')
 const MOCKDATAURL =
   'https://portal-test.forms.gov/mia-test/madeinamericanonavailabilitywaiverrequest/submission?created__gt=2021-10-13&select=state,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage, data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId'
 
-describe('the add function', function () {
-  it('should add 2 numbers together', () => {
-    const result = testObj.add(2, 2)
-    expect(result).to.be.equal(4)
-  })
-})
-
 describe('test suite for checking files', function () {
   let testFilesStub
   testFilesStub = sinon.stub(testObj, 'checkifWaiverFileExists')

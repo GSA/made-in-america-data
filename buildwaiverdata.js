@@ -17,11 +17,6 @@ class DataScript {
     console.log('initiate')
   }
 
-  static add(a, b) {
-    const result = a + b
-    return result
-  }
-
   async runScript() {
     let formsdata
     let newformdata
