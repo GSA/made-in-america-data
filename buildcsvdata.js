@@ -1,14 +1,11 @@
 if (process.env.NODE_ENV !== 'production') {
+  // eslint-disable-next-line global-require
   require('dotenv').config()
 }
 
 const fs = require('fs')
 
-const {
-  GH_API_KEY: API_KEY,
-  FORMS_API_KEY: FORMSKEY,
-  CIRCLE_BRANCH,
-} = process.env
+const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH } = process.env
 const WAIVERS_CSV_URL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waivers.csv?ref=${CIRCLE_BRANCH}`
 
 const JSONtoCSV = require('json2csv')
@@ -68,13 +65,15 @@ function deleteFile(data, sha, url) {
   axios(config)
     .then(() => {
       console.log('DONE DELETING')
+      // eslint-disable-next-line no-use-before-define
       convertJSONToCSV(waiversFile)
     })
-    .catch((error) => {
+    .catch(error => {
       console.log('ERROR IN DELETING FILE ---> ', error)
     })
 }
 
+// eslint-disable-next-line consistent-return
 async function getShaValue(url) {
   console.log(`Getting data again...in the ${CIRCLE_BRANCH} branch`)
   try {
@@ -119,12 +118,12 @@ async function CSVajaxMethod(data, shaValue, url) {
   }
 
   axios(config)
-    .then((response) => {
+    .then(response => {
       console.log('DONE')
       console.log(JSON.stringify(response.data))
       return JSON.stringify(response.data)
     })
-    .catch((error) => {
+    .catch(error => {
       /**
        * ! if there is a 409 error, it means that there is a conflict in that the
        * ! file already exists and because did not pass the sha value.
@@ -133,7 +132,7 @@ async function CSVajaxMethod(data, shaValue, url) {
        */
       if (error.response.status === 409) {
         console.log('CSV ALREADY EXISTS!!!')
-        getShaValue(url).then((sha) => {
+        getShaValue(url).then(sha => {
           deleteFile(data, sha, url)
         })
       } else {
