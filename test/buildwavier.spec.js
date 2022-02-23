@@ -68,6 +68,7 @@ describe(' testing the getData function', () => {
     expect(fakedata).to.have.lengthOf(3, 'length isnt right')
     done()
   })
+
   it('should only be called once', done => {
     expect(spy.calledOnce).to.be.true
     done()
@@ -86,9 +87,11 @@ describe('encoding conversion test', () => {
 
 describe('testing mapping data function', () => {
   let result
+
   beforeEach(() => {
     result = testObj.createMappedData(rawData)
   })
+
   it('should convert forms data to readable text', () => {
     expect(result[0].data).to.have.deep.property('procurementStage', 'Post-solicitation')
     expect(result[0].data).to.have.deep.property('waiverCoverage', 'Individual Waiver')
@@ -97,6 +100,7 @@ describe('testing mapping data function', () => {
       'Instant Delivery Only',
     )
   })
+
   it('test omb determination and request status text format', () => {
     expect(result[0].data).to.have.deep.property('ombDetermination', 'Consistent with Policy')
     expect(result[0].data).to.have.deep.property('requestStatus', 'Reviewed')
