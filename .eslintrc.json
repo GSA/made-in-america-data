@@ -21,8 +21,12 @@
       "env": {
         "mocha": true
       },
+      "extends": [
+        "plugin:chai-friendly/recommended"
+      ],
       "plugins": [
-        "mocha"
+        "mocha",
+        "chai-friendly"
       ]
     }
   ]
