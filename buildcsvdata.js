@@ -73,7 +73,6 @@ function deleteFile(data, sha, url) {
     })
 }
 
-// eslint-disable-next-line consistent-return
 async function getShaValue(url) {
   console.log(`Getting data again...in the ${CIRCLE_BRANCH} branch`)
   try {
@@ -95,6 +94,7 @@ async function getShaValue(url) {
   } catch (error) {
     console.log('error in getting sha value for CSV', error)
   }
+  return undefined
 }
 
 async function CSVajaxMethod(data, shaValue, url) {
