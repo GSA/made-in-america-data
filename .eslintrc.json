@@ -1,9 +1,29 @@
 {
-  "extends": ["airbnb-base", "prettier", "plugin:node/recommended", "eslint:recommended"],
-  "plugins": ["prettier"],
+  "extends": [
+    "airbnb-base",
+    "prettier",
+    "plugin:node/recommended",
+    "eslint:recommended"
+  ],
+  "plugins": [
+    "prettier"
+  ],
   "rules": {
     "prettier/prettier": "error",
     "no-unused-vars": "warn",
     "no-console": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "test/*.spec.js"
+      ],
+      "env": {
+        "mocha": true
+      },
+      "plugins": [
+        "mocha"
+      ]
+    }
+  ]
 }
