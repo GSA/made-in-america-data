@@ -10,7 +10,7 @@ const chaiFiles = require('chai-files')
 chai.use(require('chai-json'))
 chai.use(chaiFiles)
 const expect = chai.expect
-var file = chaiFiles.file
+const file = chaiFiles.file
 
 const DataScript = require('../buildwaiverdata')
 const testObj = new DataScript()
