@@ -42,19 +42,6 @@ const fields = [
 ]
 const opts = { fields }
 
-function convertJSONToCSV(jsonData, callBack) {
-  try {
-    console.log('Converting JSON')
-    const csv = JSONtoCSV.parse(jsonData, opts)
-    fs.writeFileSync('./waivers.csv', csv)
-    const csvFile = fs.readFileSync('./waivers.csv')
-    console.log('JSON converted')
-    callBack(csvFile, '', WAIVERS_CSV_URL)
-  } catch (err) {
-    console.error(err)
-  }
-}
-
 function deleteFile(data, sha, url) {
   const buffered = Buffer.from(JSON.stringify(data)).toString('base64')
   //  * and then the commit message, and all data must be stringfied
@@ -110,7 +97,7 @@ async function getShaValue(url) {
   return undefined
 }
 
-const CSVajaxMethod = async (data, shaValue, url) => {
+async function CSVajaxMethod(data, shaValue, url) {
   const buffered = Buffer.from(data).toString('base64')
   //  * and then the commit message, and all data must be stringfied
   const jsonData = JSON.stringify({
@@ -154,4 +141,17 @@ const CSVajaxMethod = async (data, shaValue, url) => {
     })
 }
 
-convertJSONToCSV(waiversFile, CSVajaxMethod)
+function convertJSONToCSV(jsondata) {
+  try {
+    console.log('Converting JSON')
+    const csv = JSONtoCSV.parse(jsondata, opts)
+    fs.writeFileSync('./waivers.csv', csv)
+    const csvFile = fs.readFileSync('./waivers.csv')
+    console.log('JSON converted')
+    CSVajaxMethod(csvFile, '', WAIVERS_CSV_URL)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+convertJSONToCSV(waiversFile)
