@@ -45,7 +45,7 @@ const opts = { fields }
 function deleteFile(data, sha, url) {
   const buffered = Buffer.from(JSON.stringify(data)).toString('base64')
   //  * and then the commit message, and all data must be stringfied
-  const jsondata = JSON.stringify({
+  const jsonData = JSON.stringify({
     message: ' delete csv file',
     content: buffered,
     sha,
@@ -59,7 +59,7 @@ function deleteFile(data, sha, url) {
       Authorization: `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
     },
-    data: jsondata,
+    data: jsonData,
   }
 
   axios(config)
@@ -100,7 +100,7 @@ async function getShaValue(url) {
 async function CSVajaxMethod(data, shaValue, url) {
   const buffered = Buffer.from(data).toString('base64')
   //  * and then the commit message, and all data must be stringfied
-  const jsondata = JSON.stringify({
+  const jsonData = JSON.stringify({
     message: 'uploading csv file',
     content: buffered,
     sha: shaValue,
@@ -114,7 +114,7 @@ async function CSVajaxMethod(data, shaValue, url) {
       Authorization: `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
     },
-    data: jsondata,
+    data: jsonData,
   }
 
   axios(config)
@@ -141,10 +141,10 @@ async function CSVajaxMethod(data, shaValue, url) {
     })
 }
 
-function convertJSONToCSV(jsondata) {
+function convertJSONToCSV(jsonData) {
   try {
     console.log('Converting JSON')
-    const csv = JSONtoCSV.parse(jsondata, opts)
+    const csv = JSONtoCSV.parse(jsonData, opts)
     fs.writeFileSync('./waivers.csv', csv)
     const csvFile = fs.readFileSync('./waivers.csv')
     console.log('JSON converted')
