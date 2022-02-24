@@ -62,7 +62,7 @@ class DataScript {
     return true
   }
 
-  newWaiverFileCheck(newdwaiverdata) {
+  static newWaiverFileCheck(newdwaiverdata) {
     if (!fs.existsSync(newdwaiverdata)) {
       console.log('Getting forms current data...')
       // assign it
@@ -107,11 +107,13 @@ class DataScript {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   covertBase64toUTF8(ajaxdata) {
     console.log('Converting BASE 64 to UTF-8')
     const buffObj = Buffer.from(ajaxdata.data.content, 'base64')
     const text = buffObj.toString('utf-8')
-    this.ajaxdata.data = JSON.parse(text)
+    // eslint-disable-next-line no-param-reassign
+    ajaxdata.data = JSON.parse(text)
     return ajaxdata.data
   }
 
