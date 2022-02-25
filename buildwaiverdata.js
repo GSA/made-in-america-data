@@ -38,8 +38,8 @@ class DataScript {
 
       // if current.json already exists
       formsdata = JSON.parse(fs.readFileSync(waiversFile, 'utf-8', null, 2))
-      const newfilecheck = DataScript.newWaiverFileCheck(newwaiversFile) // should return true
-      if (newfilecheck === true) {
+      const newFile = DataScript.newWaiverFileCheck(newwaiversFile) // should return true
+      if (newFile === true) {
         newformdata = await DataScript.getData(DATAURL)
         const newCleanedFormData = this.createMappedData(formsdata)
         fs.writeFileSync(newwaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
