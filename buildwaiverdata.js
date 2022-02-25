@@ -1,4 +1,6 @@
 /* eslint-disable no-underscore-dangle */
+// in several places we reference keys that have dangling underscore from the
+// response, ie. _id
 if (process.env.NODE_ENV !== 'production') {
   // eslint-disable-next-line global-require
   require('dotenv').config()
@@ -7,7 +9,7 @@ const fs = require('fs')
 const axios = require('axios')
 
 let waiversFile = `${__dirname}/waivers-data.json`
-const newwaiversFile = `${__dirname}/current-waivers.json`
+const newWaiversFile = `${__dirname}/current-waivers.json`
 const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH } = process.env
 const DATAURL =
   'https://submission.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId,data.countriesOfOriginAndUSContent'
@@ -18,34 +20,29 @@ class DataScript {
     console.log('initiate')
   }
 
-  static add(a, b) {
-    const result = a + b
-    return result
-  }
-
   async runScript() {
     try {
-      let formsdata
-      let newformdata
+      let formsData
+      let newFormData
       const fileCheck = DataScript.checkifWaiverFileExists(waiversFile) // returns true or false
       if (fileCheck === false) {
-        formsdata = await this.getData(DATAURL)
-        const cleanedFormData = this.createMappedData(formsdata)
+        formsData = await this.getData(DATAURL)
+        const cleanedFormData = this.createMappedData(formsData)
         fs.writeFileSync(waiversFile, JSON.stringify(cleanedFormData), 'utf-8', null, 2)
         console.log('COMPLETED')
         return
       }
 
       // if current.json already exists
-      formsdata = JSON.parse(fs.readFileSync(waiversFile, 'utf-8', null, 2))
-      const newFile = DataScript.newWaiverFileCheck(newwaiversFile) // should return true
+      formsData = JSON.parse(fs.readFileSync(waiversFile, 'utf-8', null, 2))
+      const newFile = DataScript.newWaiverFileCheck(newWaiversFile) // should return true
       if (newFile === true) {
-        newformdata = await DataScript.getData(DATAURL)
-        const newCleanedFormData = this.createMappedData(formsdata)
-        fs.writeFileSync(newwaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
+        newFormData = await DataScript.getData(DATAURL)
+        const newCleanedFormData = this.createMappedData(formsData)
+        fs.writeFileSync(newWaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
       }
-      const newfile = DataScript.addNewWaivers(formsdata, newformdata)
-      const completedData = this.updateReviewedWaivers(formsdata, newfile)
+      const newFileFromData = DataScript.addNewWaivers(formsData, newFormData)
+      const completedData = this.updateReviewedWaivers(formsData, newFileFromData)
       console.log(`There are a total of ${completedData.length} waivers being submitted`)
       this.ajaxMethod(completedData, '')
     } catch (error) {
@@ -53,11 +50,11 @@ class DataScript {
     }
   }
 
-  static checkifWaiverFileExists(waiverdata) {
-    if (!fs.existsSync(waiverdata)) {
+  static checkifWaiverFileExists(waiverData) {
+    if (!fs.existsSync(waiverData)) {
       console.log('No file present, creating file...')
       // assign it
-      waiversFile = waiverdata
+      waiversFile = waiverData
       // ...and create it
       fs.writeFileSync(waiversFile, JSON.stringify([]), 'utf-8')
       console.log('data written to file')
@@ -66,13 +63,13 @@ class DataScript {
     return true
   }
 
-  static newWaiverFileCheck(newdwaiverdata) {
-    if (!fs.existsSync(newdwaiverdata)) {
+  static newWaiverFileCheck(newWaiverData) {
+    if (!fs.existsSync(newWaiverData)) {
       console.log('Getting forms current data...')
       // assign it
-      this.newwaiversFile = newdwaiverdata
+      this.newWaiversFile = newWaiverData
       // ...and create it
-      fs.writeFileSync(newwaiversFile, JSON.stringify([]), 'utf-8')
+      fs.writeFileSync(newWaiversFile, JSON.stringify([]), 'utf-8')
 
       return true
     }
@@ -81,12 +78,11 @@ class DataScript {
 
   static addNewWaivers(oldData, newData) {
     console.log('ADDING NEW WAIVERS!!!!!!')
-    this.newData = JSON.parse(fs.readFileSync(newwaiversFile, 'utf-8'))
+    this.newData = JSON.parse(fs.readFileSync(newWaiversFile, 'utf-8'))
     // * filter out the data that does no exist in the old data
-    // eslint-disable-next-line no-underscore-dangle
     const diff = newData.filter(n => !oldData.some(item => n._id === item._id))
     // * and write them into the new file
-    fs.writeFileSync(newwaiversFile, JSON.stringify(diff), 'utf-8')
+    fs.writeFileSync(newWaiversFile, JSON.stringify(diff), 'utf-8')
     console.log('FINISHED ADDING NEW WAIVERS...')
     console.log(`There are ${newData.length} waivers in the current file`)
     return this.newData
@@ -103,7 +99,6 @@ class DataScript {
           'Content-Type': 'application/json',
         },
       })
-      // console.log('result', result)
       return result.data
     } catch (err) {
       console.log('ERROR GETTING DATA FROM FORMS')
@@ -112,18 +107,18 @@ class DataScript {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  covertBase64toUTF8(ajaxdata) {
+  covertBase64toUTF8(ajaxData) {
     console.log('Converting BASE 64 to UTF-8')
-    const buffObj = Buffer.from(ajaxdata.data.content, 'base64')
+    const buffObj = Buffer.from(ajaxData.data.content, 'base64')
     const text = buffObj.toString('utf-8')
     // eslint-disable-next-line no-param-reassign
-    ajaxdata.data = JSON.parse(text)
-    return ajaxdata.data
+    ajaxData.data = JSON.parse(text)
+    return ajaxData.data
   }
 
-  createMappedData(ajaxdata) {
-    if (ajaxdata.encoding === 'base64') {
-      this.ajaxdata.data = this.covertBase64toUTF8(ajaxdata)
+  createMappedData(ajaxData) {
+    if (ajaxData.encoding === 'base64') {
+      this.ajaxData.data = this.covertBase64toUTF8(ajaxData)
     }
 
     const expectedDuration = {
@@ -136,8 +131,7 @@ class DataScript {
       moreThan5Years: 'More than 5 years',
     }
     // * ...string manipulation for better readable text for the front end
-    return ajaxdata.map(item => {
-      // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    return ajaxData.map(item => {
       const temp = { ...item }
 
       temp.data.expectedMaximumDurationOfTheRequestedWaiver =
@@ -213,7 +207,7 @@ class DataScript {
   }
 
   static unlinkFile() {
-    fs.unlinkSync(newwaiversFile)
+    fs.unlinkSync(newWaiversFile)
   }
 
   static compareJSONsforChangesInModifiedDate(prev, current) {
