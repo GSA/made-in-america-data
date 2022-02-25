@@ -1,5 +1,5 @@
-let mockData = require('../test/testfiles/testjson.json')
-let newMockData = require('../test/testfiles/newdatawaiver.json')
+let mockData = `${__dirname}/testjson.json`
+let newMockData = `${__dirname}/newdatawaiver.json`
 let rawData = require('./testfiles/rawdata')
 const agedOutData = require('./testfiles/agedout.json')
 const base64data = require('./testfiles/base64data.js')
@@ -14,7 +14,6 @@ var file = chaiFiles.file
 
 const DataScript = require('../buildwaiverdata')
 const testObj = new DataScript()
-
 const axios = require('axios')
 const MockAdapter = require('axios-mock-adapter')
 const { afterEach } = require('mocha')
@@ -24,58 +23,24 @@ const MOCKDATAURL =
 
 describe('the add function', function () {
   it('should add 2 numbers together', () => {
-    const result = testObj.add(2, 2)
+    const result = DataScript.add(2, 2)
     expect(result).to.be.equal(4)
   })
 })
 
 describe('test suite for checking files', function () {
-  let testFilesStub
-  testFilesStub = sinon.stub(testObj, 'checkifWaiverFileExists')
-  console.log(testFilesStub)
-
+  const result = DataScript.checkifWaiverFileExists(mockData)
   it('Stub the check files - checking waivers-file.json exist', () => {
-    testFilesStub.returns(mockData)
+    expect(result).to.be.true
     expect(mockData).to.exist
-    expect(mockData).to.be.an('array')
-    expect(file('waivers-data.json')).to.exist
   })
 })
 
 describe('test suite for checking new files', function () {
-  let newfileStub
-  newfileStub = sinon.stub(testObj, 'newWaiverFileCheck')
-
+  const result = DataScript.newWaiverFileCheck(newMockData)
   it('Stub the check files - checking current-waivers.json exist', () => {
-    newfileStub.withArgs(newMockData).returns(newMockData)
+    expect(result).to.be.true
     expect(newMockData).to.exist
-    expect(newMockData).to.be.an('array')
-    expect(file('current-waivers.json')).to.not.exist
-  })
-})
-
-describe(' testing the getData function', () => {
-  const spy = sinon.spy(testObj, 'getData')
-  const mock = new MockAdapter(axios)
-  let fakedata
-
-  beforeEach(async () => {
-    mock.onGet(MOCKDATAURL).reply(200, mockData)
-    fakedata = await testObj.getData(MOCKDATAURL)
-  })
-
-  afterEach(() => {
-    sinon.reset()
-  })
-
-  it('should return array of data', async done => {
-    expect(fakedata).to.be.an('array')
-    expect(fakedata).to.have.lengthOf(3, 'length isnt right')
-    done()
-  })
-  it('should only be called once', done => {
-    expect(spy.calledOnce).to.be.true
-    done()
   })
 })
 
@@ -96,26 +61,31 @@ describe('testing mapping data function', function () {
   })
   it('should convert forms data to readable text', () => {
     expect(result[0].data).to.have.deep.property('procurementStage', 'Post-solicitation')
+    expect(result[1].data).to.have.deep.property('procurementStage', 'Pre-solicitation')
+
     expect(result[0].data).to.have.deep.property('waiverCoverage', 'Individual Waiver')
+    expect(result[1].data).to.have.deep.property('waiverCoverage', 'Multi-procurement Waiver')
+
+    expect(result[0].data).to.have.deep.property('ombDetermination', 'Consistent with Policy')
+    expect(result[1].data).to.have.deep.property('ombDetermination', 'Inconsistent with Policy')
+
+    expect(result[0].data).to.have.deep.property('sourcesSoughtOrRfiIssued', 'No')
+    expect(result[1].data).to.have.deep.property('sourcesSoughtOrRfiIssued', 'Yes')
+
     expect(result[0].data).to.have.deep.property(
       'expectedMaximumDurationOfTheRequestedWaiver',
       'Instant Delivery Only',
     )
   })
   it('test omb determination and request status text format', () => {
-    expect(result[0].data).to.have.deep.property('ombDetermination', 'Consistent with Policy')
     expect(result[0].data).to.have.deep.property('requestStatus', 'Reviewed')
+    expect(result[1].data).to.have.deep.property('requestStatus', 'Submitted')
   })
 })
 
 describe('testing concatanation of arrays', function () {
+  const result = DataScript.unlinkFile()
   it('mock the unlink file', () => {
-    const mock = sinon.mock(testObj)
-    const expectation = mock.expects('unlinkFile')
-    expectation.exactly(1)
-    const result = testObj.updateReviewedWaivers(mockData, agedOutData)
-    mock.verify()
-    expect(result).to.be.an('array')
-    expect(result).to.have.lengthOf(3, 'length isnt right on aged out test')
+    expect(file('current-waivers.json')).to.not.exist
   })
 })

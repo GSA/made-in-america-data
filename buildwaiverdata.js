@@ -24,29 +24,33 @@ class DataScript {
   }
 
   async runScript() {
-    let formsdata
-    let newformdata
-    const fileCheck = DataScript.checkifWaiverFileExists(waiversFile) // returns true or false
-    if (fileCheck === false) {
-      formsdata = await this.getData(DATAURL)
-      const cleanedFormData = this.createMappedData(formsdata)
-      fs.writeFileSync(waiversFile, JSON.stringify(cleanedFormData), 'utf-8', null, 2)
-      console.log('COMPLETED')
-      return
-    }
+    try {
+      let formsdata
+      let newformdata
+      const fileCheck = DataScript.checkifWaiverFileExists(waiversFile) // returns true or false
+      if (fileCheck === false) {
+        formsdata = await this.getData(DATAURL)
+        const cleanedFormData = this.createMappedData(formsdata)
+        fs.writeFileSync(waiversFile, JSON.stringify(cleanedFormData), 'utf-8', null, 2)
+        console.log('COMPLETED')
+        return
+      }
 
-    // if current.json already exists
-    formsdata = JSON.parse(fs.readFileSync(waiversFile, 'utf-8', null, 2))
-    const newWaiverFileCheck = this.newWaiverFileCheck(newwaiversFile) // should return true
-    if (newWaiverFileCheck === true) {
-      newformdata = await DataScript.getData(DATAURL)
-      const newCleanedFormData = this.createMappedData(formsdata)
-      fs.writeFileSync(newwaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
+      // if current.json already exists
+      formsdata = JSON.parse(fs.readFileSync(waiversFile, 'utf-8', null, 2))
+      const newFile = DataScript.newWaiverFileCheck(newwaiversFile) // should return true
+      if (newFile === true) {
+        newformdata = await DataScript.getData(DATAURL)
+        const newCleanedFormData = this.createMappedData(formsdata)
+        fs.writeFileSync(newwaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
+      }
+      const newfile = DataScript.addNewWaivers(formsdata, newformdata)
+      const completedData = this.updateReviewedWaivers(formsdata, newfile)
+      console.log(`There are a total of ${completedData.length} waivers being submitted`)
+      this.ajaxMethod(completedData, '')
+    } catch (error) {
+      console.log(`${error} in run script`)
     }
-    const newfile = DataScript.addNewWaivers(formsdata, newformdata)
-    const completedData = this.updateReviewedWaivers(formsdata, newfile)
-    console.log(`There are a total of ${completedData.length} waivers being submitted`)
-    this.ajaxMethod(completedData, '')
   }
 
   static checkifWaiverFileExists(waiverdata) {
@@ -62,7 +66,7 @@ class DataScript {
     return true
   }
 
-  newWaiverFileCheck(newdwaiverdata) {
+  static newWaiverFileCheck(newdwaiverdata) {
     if (!fs.existsSync(newdwaiverdata)) {
       console.log('Getting forms current data...')
       // assign it
@@ -107,11 +111,13 @@ class DataScript {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   covertBase64toUTF8(ajaxdata) {
     console.log('Converting BASE 64 to UTF-8')
     const buffObj = Buffer.from(ajaxdata.data.content, 'base64')
     const text = buffObj.toString('utf-8')
-    this.ajaxdata.data = JSON.parse(text)
+    // eslint-disable-next-line no-param-reassign
+    ajaxdata.data = JSON.parse(text)
     return ajaxdata.data
   }
 
