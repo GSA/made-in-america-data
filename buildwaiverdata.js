@@ -1,302 +1,298 @@
+/* eslint-disable no-underscore-dangle */
+// in several places we reference keys that have dangling underscore from the
+// response, ie. _id
 if (process.env.NODE_ENV !== 'production') {
+  // eslint-disable-next-line global-require
   require('dotenv').config()
 }
 const fs = require('fs')
 const axios = require('axios')
-const dataDir = '.'
-let waiversFile, oldData, newData
-const {
-  GH_API_KEY: API_KEY,
-  FORMS_API_KEY: FORMSKEY,
-  CIRCLE_BRANCH,
-} = process.env
 
+let waiversFile = `${__dirname}/waivers-data.json`
+const newWaiversFile = `${__dirname}/current-waivers.json`
+const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH } = process.env
 const DATAURL =
   'https://submission.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId,data.countriesOfOriginAndUSContent'
 const GITHUBURL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waivers-data.json?ref=${CIRCLE_BRANCH}`
 
-async function loadData() {
-  try {
-    await smokeCheck()
-    await addNewWaivers()
-    updateReviewedWaivers()
-    pushtoRepo(oldData)
-    console.log('COMPLETED')
-  } catch (err) {
-    console.log(`${err}`)
+class DataScript {
+  constructor() {
+    console.log('initiate')
   }
-}
-async function getData(url) {
-  try {
-    console.log('async data request...')
-    // * result is the data from Forms and the token is the API key
-    const result = await axios(url, {
-      method: 'get',
-      headers: {
-        'x-token': FORMSKEY,
-      },
-    })
-    const sha = result.data.sha
-    // * if the data is encoded, we need to convert it back to utf-8 in
-    // * in order to read the contents and do any type of manipulation
-    const mappedData = (ajaxdata) => {
-      if (ajaxdata.data.encoding === 'base64') {
-        console.log('Converting BASE 64 to UTF-8')
-        let buffObj = Buffer.from(ajaxdata.data.content, 'base64')
-        let text = buffObj.toString('utf-8')
-        ajaxdata.data = JSON.parse(text)
-      }
-      const expectedDuration = {
-        between2And3Years: 'Between 2 and 3 years',
-        instantDeliveryOnly: 'Instant Delivery Only',
-        '06Months': '0 - 6 months',
-        between6MonthsAnd1Year: 'Between 6 months and 1 year',
-        between1And2Years: 'Between 1 and 2 years',
-        between3And5Years: 'Between 3 and 5 years',
-        moreThan5Years: 'More than 5 years',
-      }
-      // * ...string manipulation for better readable text for the front end
-      return ajaxdata.data.map((item) => {
-        let temp = Object.assign({}, item)
-        temp.data.expectedMaximumDurationOfTheRequestedWaiver =
-          expectedDuration[
-            item.data.expectedMaximumDurationOfTheRequestedWaiver
-          ]
-        if (temp.data.procurementStage === 'postSolicitation') {
-          temp.data.procurementStage = 'Post-solicitation'
-        }
-        if (temp.data.procurementStage === 'preSolicitation') {
-          temp.data.procurementStage = 'Pre-solicitation'
-        }
-        if (temp.data.waiverCoverage === 'individualWaiver') {
-          temp.data.waiverCoverage = 'Individual Waiver'
-        }
-        if (temp.data.waiverCoverage === 'multiProcurementWaiver') {
-          temp.data.waiverCoverage = 'Multi-procurement Waiver'
-        }
-        if (temp.data.ombDetermination === 'consistentWithPolicy') {
-          temp.data.ombDetermination = 'Consistent with Policy'
-        }
-        if (temp.data.ombDetermination === 'inconsistentWithPolicy') {
-          temp.data.ombDetermination = 'Inconsistent with Policy'
-        }
-        if (
-          temp.data.ombDetermination === 'conditionallyConsistentWithPolicy'
-        ) {
-          temp.data.ombDetermination = 'Conditionally Consistent with Policy'
-        }
-        if (temp.data.sourcesSoughtOrRfiIssued === 'no') {
-          temp.data.sourcesSoughtOrRfiIssued = 'No'
-        }
-        if (temp.data.sourcesSoughtOrRfiIssued === 'yes') {
-          temp.data.sourcesSoughtOrRfiIssued = 'Yes'
-        }
-        if (temp.data.isPricePreferenceIncluded === 'no') {
-          temp.data.isPricePreferenceIncluded = 'No'
-        }
-        if (temp.data.isPricePreferenceIncluded === 'yes') {
-          temp.data.isPricePreferenceIncluded = 'Yes'
-        }
-        if (temp.data.requestStatus === 'reviewed') {
-          temp.data.requestStatus = 'Reviewed'
-        }
-        if (temp.data.requestStatus === 'submitted') {
-          temp.data.requestStatus = 'Submitted'
-        }
 
-        return temp
-      })
-    }
-
-    let final = mappedData(result)
-    // * if the sha value isn't undefined, then creating a new key:value pair in the
-    // * JSON for the sha value
-    if (sha) {
-      console.log('including sha value...')
-      final['sha'] = sha
-      return final
-    }
-    return final
-  } catch (err) {
-    console.error(err)
-  }
-}
-async function smokeCheck() {
-  try {
-    console.log('checking if files exist...')
-    // * if the waivers-data.json doesn't exists, create the file in the directory...
-    if (!fs.existsSync(`${dataDir}/waivers-data.json`)) {
-      // * ...assign the waiversFile variable to the file
-      waiversFile = `${dataDir}/waivers-data.json`
-      console.log('file not here')
-      // * and create and stringify an empty array in the file
-      fs.writeFileSync(waiversFile, JSON.stringify([]), (err) => {
-        if (err) {
-          console.log('err', err)
-        } else {
-          console.log('data written to file')
-        }
-      })
-      // * make ajax call to Forms DB to get waiver data...
-      await getData(DATAURL).then((res) => {
-        //  *...write the data to the waivers-data.json
-        fs.writeFileSync(waiversFile, JSON.stringify(res), 'utf-8', null, 2)
-        // * ...and assign the oldData variable to the waivers-data.json file
-        oldData = JSON.parse(fs.readFileSync(waiversFile, 'utf-8'))
+  async runScript() {
+    try {
+      let formsData
+      let newFormData
+      const fileCheck = DataScript.checkifWaiverFileExists(waiversFile) // returns true or false
+      if (fileCheck === false) {
+        formsData = await this.getData(DATAURL)
+        const cleanedFormData = this.createMappedData(formsData)
+        fs.writeFileSync(waiversFile, JSON.stringify(cleanedFormData), 'utf-8', null, 2)
+        console.log('COMPLETED')
         return
-      })
-    } else {
-      // * But if the file is present, then just assign the oldData variable to the file.
-      oldData = JSON.parse(
-        fs.readFileSync(`${dataDir}/waivers-data.json`, 'utf-8')
-      )
-      console.log('Smoke Check completed')
-    }
-  } catch (err) {
-    console.error('error in smoke test', err)
-  }
-}
-async function addNewWaivers() {
-  // * if there is no current waivers file in the directory
-  if (!fs.existsSync(`${dataDir}/current-waivers.json`)) {
-    // * go get the data from Forms DB...
-    await getData(DATAURL).then((res) => {
-      // * and write it to json
-      fs.writeFileSync(
-        `${dataDir}/current-waivers.json`,
-        JSON.stringify(res),
-        'utf-8',
-        null,
-        2
-      )
-      console.log('ADDING NEW WAIVERS!!!!!!')
-      // * and lets call it newData
-      newData = JSON.parse(
-        fs.readFileSync(`${dataDir}/current-waivers.json`, 'utf-8')
-      )
-      // * filter out the data that does no exist in the old data
-      const diff = newData.filter(
-        (n) => !oldData?.some((item) => n._id === item._id)
-      )
-      const combined = [...newData, ...diff]
-      // * and write them into the new file
-      fs.writeFileSync(`${dataDir}/current-waivers.json`, JSON.stringify(combined), 'utf-8')
-      console.log('FINISHED ADDING NEW WAIVERS...')
-      console.log(
-        'There are ' + combined.length + ' waivers in the current file'
-      )
-      return
-    })
-  }
-}
-function pushtoRepo(data) {
-  console.log(
-    'There are a total of ' + data.length + ' waviers being submitted'
-  )
-  /** ajaxMethod
-   * @param data is the current-waviers.json
-   * @param '' is the sha value
-   * * when pushing to the repo when the file isn't present, you don't need a sha value
-   * * but on updates and deletions a sha value is required
-   */
-  ajaxMethod(data, '')
-}
-async function updateRepo(data) {
-  console.log('getting SHA Value for Update')
-  const response = await getData(GITHUBURL)
-  const shaValue = response.sha
-  ajaxMethod(data, shaValue)
-}
-function updateReviewedWaivers() {
-  console.log('Updating Waivers with new modified date')
-  let temp = []
-  temp = oldData
-
-  //  * function checks for json waivers that have changed modified data
-  const modifiedWaivers = compareJSONsforChangesInModifiedDate(oldData, newData)
-  // * map the currentdata.json and into a new array and find the objects from the returned
-  // * 'compareJSONsforChangesInModifiedDate' function
-  if (newData) {
-    console.log('in new data')
-    const modified = temp.map(
-      (obj) => modifiedWaivers.find((o) => obj._id === o._id) || obj
-    )
-    // * and replace them.
-    const combined = newData.concat(modified)
-    const final = combined.filter(
-      (el, idx) => combined.findIndex((obj) => obj._id === el._id) === idx
-    )
-    oldData = [...final]
-    fs.writeFileSync(
-      `${dataDir}/waivers-data.json`,
-      JSON.stringify(oldData),
-      'utf-8'
-    )
-    // * delete the current waiver file as it's not longer needed till the next pull
-    fs.unlinkSync(`${dataDir}/current-waivers.json`)
-  }
-}
-
-function compareJSONsforChangesInModifiedDate(prev, current) {
-  // * return the objects that do not have the same modified date.
-  const result = current.filter(
-    ({ modified }) =>
-      //  * ...convert Date object to correctly compare date
-      !prev.some(
-        (o) => new Date(o.modified).getTime() === new Date(modified).getTime()
-      )
-  )
-  return result
-}
-function ajaxMethod(data, shaValue) {
-  // * when pushing to github, the data must be encoded to base64 format
-  let buffered = Buffer.from(JSON.stringify(data)).toString('base64')
-  //  * and then the commit message, and all data must be stringfied
-  const event = new Date(Date.now())
-  const options = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }
-  let jsondata = JSON.stringify({
-    message:
-      'file uploaded on ' +
-      event.toLocaleDateString(undefined, options) +
-      ' at ' +
-      event.toLocaleTimeString('en-US'),
-    content: buffered,
-    sha: shaValue,
-    branch: CIRCLE_BRANCH,
-  })
-  let config = {
-    method: 'put',
-    url: GITHUBURL,
-    headers: {
-      Authorization: 'Bearer ' + API_KEY,
-      'Content-Type': 'application/json',
-    },
-    data: jsondata,
-  }
-
-  axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data))
-      return JSON.stringify(response.data)
-    })
-    .catch(function (error) {
-      /**
-       * ! if there is a 409 error, it means that there is a conflict in that the
-       * ! file already exists and because did not pass the sha value.
-       * ! In order to update/delete, you must do a GET call to the file and THEN perform
-       * ! another PUT request
-       */
-      if (error.response.status === 409) {
-        console.log('409 error!!!!!!!!')
-        updateRepo(data)
-      } else {
-        console.log('error', error)
       }
+
+      // if current.json already exists
+      formsData = JSON.parse(fs.readFileSync(waiversFile, 'utf-8', null, 2))
+      const newFile = DataScript.newWaiverFileCheck(newWaiversFile) // should return true
+      if (newFile === true) {
+        newFormData = await DataScript.getData(DATAURL)
+        const newCleanedFormData = this.createMappedData(formsData)
+        fs.writeFileSync(newWaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
+      }
+      const newFileFromData = DataScript.addNewWaivers(formsData, newFormData)
+      const completedData = this.updateReviewedWaivers(formsData, newFileFromData)
+      console.log(`There are a total of ${completedData.length} waivers being submitted`)
+      this.ajaxMethod(completedData, '')
+    } catch (error) {
+      console.log(`${error} in run script`)
+    }
+  }
+
+  static checkifWaiverFileExists(waiverData) {
+    if (!fs.existsSync(waiverData)) {
+      console.log('No file present, creating file...')
+      // assign it
+      waiversFile = waiverData
+      // ...and create it
+      fs.writeFileSync(waiversFile, JSON.stringify([]), 'utf-8')
+      console.log('data written to file')
+      return false
+    }
+    return true
+  }
+
+  static newWaiverFileCheck(newWaiverData) {
+    if (!fs.existsSync(newWaiverData)) {
+      console.log('Getting forms current data...')
+      // assign it
+      this.newWaiversFile = newWaiverData
+      // ...and create it
+      fs.writeFileSync(newWaiversFile, JSON.stringify([]), 'utf-8')
+
+      return true
+    }
+    return false
+  }
+
+  static addNewWaivers(oldData, newData) {
+    console.log('ADDING NEW WAIVERS!!!!!!')
+    this.newData = JSON.parse(fs.readFileSync(newWaiversFile, 'utf-8'))
+    // * filter out the data that does no exist in the old data
+    const diff = newData.filter(n => !oldData.some(item => n._id === item._id))
+    // * and write them into the new file
+    fs.writeFileSync(newWaiversFile, JSON.stringify(diff), 'utf-8')
+    console.log('FINISHED ADDING NEW WAIVERS...')
+    console.log(`There are ${newData.length} waivers in the current file`)
+    return this.newData
+  }
+
+  static async getData(url) {
+    // * result is the data from Forms and the token is the API key
+    try {
+      const result = await axios(url, {
+        method: 'get',
+        headers: {
+          'x-token': FORMSKEY,
+          Authorization: `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      return result.data
+    } catch (err) {
+      console.log('ERROR GETTING DATA FROM FORMS')
+      return `${err}`
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  covertBase64toUTF8(ajaxData) {
+    console.log('Converting BASE 64 to UTF-8')
+    const buffObj = Buffer.from(ajaxData.data.content, 'base64')
+    const text = buffObj.toString('utf-8')
+    // eslint-disable-next-line no-param-reassign
+    ajaxData.data = JSON.parse(text)
+    return ajaxData.data
+  }
+
+  createMappedData(ajaxData) {
+    if (ajaxData.encoding === 'base64') {
+      this.ajaxData.data = this.covertBase64toUTF8(ajaxData)
+    }
+
+    const expectedDuration = {
+      between2And3Years: 'Between 2 and 3 years',
+      instantDeliveryOnly: 'Instant Delivery Only',
+      '06Months': '0 - 6 months',
+      between6MonthsAnd1Year: 'Between 6 months and 1 year',
+      between1And2Years: 'Between 1 and 2 years',
+      between3And5Years: 'Between 3 and 5 years',
+      moreThan5Years: 'More than 5 years',
+    }
+    // * ...string manipulation for better readable text for the front end
+    return ajaxData.map(item => {
+      const temp = { ...item }
+
+      temp.data.expectedMaximumDurationOfTheRequestedWaiver =
+        expectedDuration[item.data.expectedMaximumDurationOfTheRequestedWaiver]
+
+      if (temp.data.procurementStage === 'postSolicitation') {
+        temp.data.procurementStage = 'Post-solicitation'
+      }
+      if (temp.data.procurementStage === 'preSolicitation') {
+        temp.data.procurementStage = 'Pre-solicitation'
+      }
+      if (temp.data.waiverCoverage === 'individualWaiver') {
+        temp.data.waiverCoverage = 'Individual Waiver'
+      }
+      if (temp.data.waiverCoverage === 'multiProcurementWaiver') {
+        temp.data.waiverCoverage = 'Multi-procurement Waiver'
+      }
+      if (temp.data.ombDetermination === 'consistentWithPolicy') {
+        temp.data.ombDetermination = 'Consistent with Policy'
+      }
+      if (temp.data.ombDetermination === 'inconsistentWithPolicy') {
+        temp.data.ombDetermination = 'Inconsistent with Policy'
+      }
+      if (temp.data.ombDetermination === 'conditionallyConsistentWithPolicy') {
+        temp.data.ombDetermination = 'Conditionally Consistent with Policy'
+      }
+      if (temp.data.sourcesSoughtOrRfiIssued === 'no') {
+        temp.data.sourcesSoughtOrRfiIssued = 'No'
+      }
+      if (temp.data.sourcesSoughtOrRfiIssued === 'yes') {
+        temp.data.sourcesSoughtOrRfiIssued = 'Yes'
+      }
+      if (temp.data.isPricePreferenceIncluded === 'no') {
+        temp.data.isPricePreferenceIncluded = 'No'
+      }
+      if (temp.data.isPricePreferenceIncluded === 'yes') {
+        temp.data.isPricePreferenceIncluded = 'Yes'
+      }
+      if (temp.data.requestStatus === 'reviewed') {
+        temp.data.requestStatus = 'Reviewed'
+      }
+      if (temp.data.requestStatus === 'submitted') {
+        temp.data.requestStatus = 'Submitted'
+      }
+      return temp
     })
+  }
+
+  updateReviewedWaivers(oldData, newData) {
+    let temp = []
+    temp = oldData
+    console.log('Updating Waivers with new modified date')
+    //  * function checks for json waivers that have changed modified data
+    const modifiedWaivers = DataScript.compareJSONsforChangesInModifiedDate(temp, newData)
+    if (newData) {
+      console.log('in new data')
+      const modified = temp.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
+      // * and replace them.
+      const combined = newData.concat(modified)
+
+      const final = combined.filter(
+        (el, idx) => combined.findIndex(obj => obj._id === el._id) === idx,
+      )
+
+      this.oldData = [...final]
+
+      fs.writeFileSync(waiversFile, JSON.stringify(oldData), 'utf-8')
+      // * delete the current waiver file as it's not longer needed till the next pull
+      DataScript.unlinkFile()
+      return oldData
+    }
+    return oldData
+  }
+
+  static unlinkFile() {
+    fs.unlinkSync(newWaiversFile)
+  }
+
+  static compareJSONsforChangesInModifiedDate(prev, current) {
+    // * return the objects that do not have the same modified date.
+    const result = current.filter(
+      ({ modified }) =>
+        //  * ...convert Date object to correctly compare date
+        !prev.some(o => new Date(o.modified).getTime() === new Date(modified).getTime()),
+    )
+    return result
+  }
+
+  async updateRepo(data) {
+    console.log('getting SHA Value for Update')
+    const response = await DataScript.getData(GITHUBURL)
+    const shaValue = response.sha
+    this.ajaxMethod(data, shaValue)
+  }
+
+  ajaxMethod(data, shaValue) {
+    // * when pushing to github, the data must be encoded to base64 format
+    const buffered = Buffer.from(JSON.stringify(data)).toString('base64')
+    //  * and then the commit message, and all data must be stringfied
+    const event = new Date(Date.now())
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }
+
+    const jsondata = JSON.stringify({
+      message: `file uploaded on ${event.toLocaleDateString(
+        undefined,
+        options,
+      )} at ${event.toLocaleTimeString('en-US')}`,
+      content: buffered,
+      sha: shaValue,
+      branch: CIRCLE_BRANCH,
+    })
+
+    const config = {
+      method: 'put',
+      url: GITHUBURL,
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      data: jsondata,
+    }
+
+    axios(config)
+      .then(response => {
+        console.log('COMPLETED')
+        console.log(JSON.stringify(response.data))
+        return JSON.stringify(response.data)
+      })
+      .catch(error => {
+        /**
+         * ! if there is a 409 error, it means that there is a conflict in that the
+         * ! file already exists and because did not pass the sha value.
+         * ! In order to update/delete, you must do a GET call to the file and THEN perform
+         * ! another PUT request
+         */
+        if (error.response.status === 409) {
+          console.log('409 --- waviers.json already exists...going to get sha value to update!')
+          this.updateRepo(data)
+        } else {
+          console.log('error', error)
+        }
+      })
+  }
+
+  pushtoRepo(data) {
+    console.log(`There are a total of ${data.length} waviers being submitted`)
+    /** ajaxMethod
+     * @param data is the current-waviers.json
+     * @param '' is the sha value
+     * * when pushing to the repo when the file isn't present, you don't need a sha value
+     * * but on updates and deletions a sha value is required
+     */
+    this.ajaxMethod(data, '')
+  }
 }
-loadData()
+// end of datascript
+const runner = new DataScript()
+runner.runScript()
+module.exports = DataScript

@@ -9,19 +9,19 @@ jobs:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: node:17.0-buster-slim
+      - image: node:16-buster-slim
 
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - run:
-          name: "run json script"
+          name: 'run json script'
           command: |
-           npm install
-           node buildwaiverdata.js
+            npm install
+            node buildwaiverdata.js
       - run:
-          name: "run csv script"
+          name: 'run csv script'
           command: |
             node buildcsvdata.js
 
@@ -35,19 +35,35 @@ workflows:
           filters:
             branches:
               only:
-               - develop
+                - develop
       - run-script:
           requires:
-          - approval
+            - approval
           filters:
             branches:
               only:
-               - develop
+                - develop
+
+  stage-workflow:
+    jobs:
+      - approval:
+          type: approval
+          filters:
+            branches:
+              only:
+                - stage
+      - run-script:
+          requires:
+            - approval
+          filters:
+            branches:
+              only:
+                - stage
 
   main-workflow:
     triggers:
       - schedule:
-          cron: "0 11,23 * * *"
+          cron: '0 11,23 * * *'
           filters:
             branches:
               only:
