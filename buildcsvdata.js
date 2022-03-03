@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const fs = require('fs')
 
-const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH } = process.env
+const { GH_API_KEY: API_KEY, CIRCLE_BRANCH } = process.env
 const WAIVERS_CSV_URL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waivers.csv?ref=${CIRCLE_BRANCH}`
 
 const JSONtoCSV = require('json2csv')
@@ -45,7 +45,7 @@ const opts = { fields }
 function deleteFile(data, sha, url) {
   const buffered = Buffer.from(JSON.stringify(data)).toString('base64')
   //  * and then the commit message, and all data must be stringfied
-  const jsondata = JSON.stringify({
+  const jsonData = JSON.stringify({
     message: ' delete csv file',
     content: buffered,
     sha,
@@ -59,7 +59,7 @@ function deleteFile(data, sha, url) {
       Authorization: `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
     },
-    data: jsondata,
+    data: jsonData,
   }
 
   axios(config)
@@ -73,7 +73,6 @@ function deleteFile(data, sha, url) {
     })
 }
 
-// eslint-disable-next-line consistent-return
 async function getShaValue(url) {
   console.log(`Getting data again...in the ${CIRCLE_BRANCH} branch`)
   try {
@@ -95,12 +94,13 @@ async function getShaValue(url) {
   } catch (error) {
     console.log('error in getting sha value for CSV', error)
   }
+  return undefined
 }
 
 async function CSVajaxMethod(data, shaValue, url) {
   const buffered = Buffer.from(data).toString('base64')
   //  * and then the commit message, and all data must be stringfied
-  const jsondata = JSON.stringify({
+  const jsonData = JSON.stringify({
     message: 'uploading csv file',
     content: buffered,
     sha: shaValue,
@@ -114,7 +114,7 @@ async function CSVajaxMethod(data, shaValue, url) {
       Authorization: `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
     },
-    data: jsondata,
+    data: jsonData,
   }
 
   axios(config)

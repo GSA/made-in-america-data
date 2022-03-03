@@ -1,7 +1,6 @@
 waivers-data.json
 waiverscsv.json
 waivers.csv
-waiverscsv.csv
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,dotenv
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,dotenv

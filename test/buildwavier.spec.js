@@ -1,34 +1,26 @@
-let mockData = `${__dirname}/testjson.json`
-let newMockData = `${__dirname}/newdatawaiver.json`
-let rawData = require('./testfiles/rawdata')
-const agedOutData = require('./testfiles/agedout.json')
-const base64data = require('./testfiles/base64data.js')
+/* eslint-disable node/no-unpublished-require */
+// several of our requires are not published ES6 modules ie. "sinon"
 const sinon = require('sinon')
 const chai = require('chai')
 const chaiFiles = require('chai-files')
+const rawData = require('./testfiles/rawdata')
+const base64data = require('./testfiles/base64data')
+
+const mockData = `${__dirname}/testjson.json`
+const newMockData = `${__dirname}/newdatawaiver.json`
 
 chai.use(require('chai-json'))
+
 chai.use(chaiFiles)
-const expect = chai.expect
-var file = chaiFiles.file
+
+const { expect } = chai
+const { file } = chaiFiles
 
 const DataScript = require('../buildwaiverdata')
+
 const testObj = new DataScript()
-const axios = require('axios')
-const MockAdapter = require('axios-mock-adapter')
-const { afterEach } = require('mocha')
 
-const MOCKDATAURL =
-  'https://portal-test.forms.gov/mia-test/madeinamericanonavailabilitywaiverrequest/submission?created__gt=2021-10-13&select=state,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage, data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId'
-
-describe('the add function', function () {
-  it('should add 2 numbers together', () => {
-    const result = DataScript.add(2, 2)
-    expect(result).to.be.equal(4)
-  })
-})
-
-describe('test suite for checking files', function () {
+describe('test suite for checking files', () => {
   const result = DataScript.checkifWaiverFileExists(mockData)
   it('Stub the check files - checking waivers-file.json exist', () => {
     expect(result).to.be.true
@@ -36,7 +28,7 @@ describe('test suite for checking files', function () {
   })
 })
 
-describe('test suite for checking new files', function () {
+describe('test suite for checking new files', () => {
   const result = DataScript.newWaiverFileCheck(newMockData)
   it('Stub the check files - checking current-waivers.json exist', () => {
     expect(result).to.be.true
@@ -44,7 +36,7 @@ describe('test suite for checking new files', function () {
   })
 })
 
-describe('encoding conversion test', function () {
+describe('encoding conversion test', () => {
   it('should be in utf-8 format', () => {
     const spy = sinon.spy(testObj, 'covertBase64toUTF8')
     const result = testObj.covertBase64toUTF8(base64data)
@@ -54,7 +46,7 @@ describe('encoding conversion test', function () {
   })
 })
 
-describe('testing mapping data function', function () {
+describe('testing mapping data function', () => {
   let result
   beforeEach(() => {
     result = testObj.createMappedData(rawData)
@@ -83,8 +75,8 @@ describe('testing mapping data function', function () {
   })
 })
 
-describe('testing concatanation of arrays', function () {
-  const result = DataScript.unlinkFile()
+describe('testing concatanation of arrays', () => {
+  DataScript.unlinkFile()
   it('mock the unlink file', () => {
     expect(file('current-waivers.json')).to.not.exist
   })
