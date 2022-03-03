@@ -82,7 +82,10 @@ class DataScript {
     // * filter out the data that does no exist in the old data
     const diff = newData.filter(n => !oldData.some(item => n._id === item._id))
     // * and write them into the new file
-    fs.writeFileSync(newWaiversFile, JSON.stringify(diff), 'utf-8')
+
+    const combined = [this.newData, ...diff]
+
+    fs.writeFileSync(newWaiversFile, JSON.stringify(combined), 'utf-8')
     console.log('FINISHED ADDING NEW WAIVERS...')
     console.log(`There are ${newData.length} waivers in the current file`)
     return this.newData
