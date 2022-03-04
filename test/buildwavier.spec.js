@@ -48,7 +48,7 @@ describe('encoding conversion test', () => {
 
 describe('testing mapping data function', () => {
   let result
-  beforeEach(() => {
+  before(() => {
     result = testObj.createMappedData(rawData)
   })
   it('should convert forms data to readable text', () => {

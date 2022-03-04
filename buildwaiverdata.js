@@ -133,6 +133,38 @@ class DataScript {
       between3And5Years: 'Between 3 and 5 years',
       moreThan5Years: 'More than 5 years',
     }
+
+    const procurementStageKey = {
+      postSolicitation: 'Post-solicitation',
+      preSolicitation: 'Pre-solicitation',
+    }
+
+    const waiverCoverageKey = {
+      individualWaiver: 'Individual Waiver',
+      multiProcurementWaiver: 'Multi-procurement Waiver',
+    }
+
+    const ombDeterminationKey = {
+      consistentWithPolicy: 'Consistent with Policy',
+      inconsistentWithPolicy: 'Inconsistent with Policy',
+      conditionallyConsistentWithPolicy: 'Conditionally Consistent with Policy',
+    }
+
+    const sourcesSoughtOrRfiIssuedKey = {
+      no: 'No',
+      yes: 'Yes',
+    }
+
+    const isPricePreferenceIncludedKey = {
+      no: 'No',
+      yes: 'Yes',
+    }
+
+    const requestStatusKey = {
+      reviewed: 'Reviewed',
+      submitted: 'Submitted',
+    }
+
     // * ...string manipulation for better readable text for the front end
     return ajaxData.map(item => {
       const temp = { ...item }
@@ -140,45 +172,20 @@ class DataScript {
       temp.data.expectedMaximumDurationOfTheRequestedWaiver =
         expectedDuration[item.data.expectedMaximumDurationOfTheRequestedWaiver]
 
-      if (temp.data.procurementStage === 'postSolicitation') {
-        temp.data.procurementStage = 'Post-solicitation'
-      }
-      if (temp.data.procurementStage === 'preSolicitation') {
-        temp.data.procurementStage = 'Pre-solicitation'
-      }
-      if (temp.data.waiverCoverage === 'individualWaiver') {
-        temp.data.waiverCoverage = 'Individual Waiver'
-      }
-      if (temp.data.waiverCoverage === 'multiProcurementWaiver') {
-        temp.data.waiverCoverage = 'Multi-procurement Waiver'
-      }
-      if (temp.data.ombDetermination === 'consistentWithPolicy') {
-        temp.data.ombDetermination = 'Consistent with Policy'
-      }
-      if (temp.data.ombDetermination === 'inconsistentWithPolicy') {
-        temp.data.ombDetermination = 'Inconsistent with Policy'
-      }
-      if (temp.data.ombDetermination === 'conditionallyConsistentWithPolicy') {
-        temp.data.ombDetermination = 'Conditionally Consistent with Policy'
-      }
-      if (temp.data.sourcesSoughtOrRfiIssued === 'no') {
-        temp.data.sourcesSoughtOrRfiIssued = 'No'
-      }
-      if (temp.data.sourcesSoughtOrRfiIssued === 'yes') {
-        temp.data.sourcesSoughtOrRfiIssued = 'Yes'
-      }
-      if (temp.data.isPricePreferenceIncluded === 'no') {
-        temp.data.isPricePreferenceIncluded = 'No'
-      }
-      if (temp.data.isPricePreferenceIncluded === 'yes') {
-        temp.data.isPricePreferenceIncluded = 'Yes'
-      }
-      if (temp.data.requestStatus === 'reviewed') {
-        temp.data.requestStatus = 'Reviewed'
-      }
-      if (temp.data.requestStatus === 'submitted') {
-        temp.data.requestStatus = 'Submitted'
-      }
+      temp.data.procurementStage = procurementStageKey[item.data.procurementStage]
+
+      temp.data.waiverCoverage = waiverCoverageKey[item.data.waiverCoverage]
+
+      temp.data.ombDetermination = ombDeterminationKey[item.data.ombDetermination]
+
+      temp.data.sourcesSoughtOrRfiIssued =
+        sourcesSoughtOrRfiIssuedKey[item.data.sourcesSoughtOrRfiIssued]
+
+      temp.data.isPricePreferenceIncluded =
+        isPricePreferenceIncludedKey[item.data.isPricePreferenceIncluded]
+
+      temp.data.requestStatus = requestStatusKey[item.data.requestStatus]
+
       return temp
     })
   }
