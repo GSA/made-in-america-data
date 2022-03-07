@@ -46,7 +46,7 @@ describe('encoding conversion test', () => {
   })
 })
 
-describe('testing mapping data function', () => {
+describe.only('testing mapping data function', () => {
   let result
   before(() => {
     result = testObj.createMappedData(rawData)

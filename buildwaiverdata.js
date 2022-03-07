@@ -124,67 +124,96 @@ class DataScript {
       this.ajaxData.data = this.covertBase64toUTF8(ajaxData)
     }
 
-    const expectedDuration = {
-      between2And3Years: 'Between 2 and 3 years',
-      instantDeliveryOnly: 'Instant Delivery Only',
-      '06Months': '0 - 6 months',
-      between6MonthsAnd1Year: 'Between 6 months and 1 year',
-      between1And2Years: 'Between 1 and 2 years',
-      between3And5Years: 'Between 3 and 5 years',
-      moreThan5Years: 'More than 5 years',
-    }
-
-    const procurementStageKey = {
-      postSolicitation: 'Post-solicitation',
-      preSolicitation: 'Pre-solicitation',
-    }
-
-    const waiverCoverageKey = {
-      individualWaiver: 'Individual Waiver',
-      multiProcurementWaiver: 'Multi-procurement Waiver',
-    }
-
-    const ombDeterminationKey = {
-      consistentWithPolicy: 'Consistent with Policy',
-      inconsistentWithPolicy: 'Inconsistent with Policy',
-      conditionallyConsistentWithPolicy: 'Conditionally Consistent with Policy',
-    }
-
-    const sourcesSoughtOrRfiIssuedKey = {
-      no: 'No',
-      yes: 'Yes',
-    }
-
-    const isPricePreferenceIncludedKey = {
-      no: 'No',
-      yes: 'Yes',
-    }
-
-    const requestStatusKey = {
-      reviewed: 'Reviewed',
-      submitted: 'Submitted',
-    }
-
     // * ...string manipulation for better readable text for the front end
     return ajaxData.map(item => {
       const temp = { ...item }
 
-      temp.data.expectedMaximumDurationOfTheRequestedWaiver =
-        expectedDuration[item.data.expectedMaximumDurationOfTheRequestedWaiver]
+      switch (temp.data.expectedMaximumDurationOfTheRequestedWaiver) {
+        case 'between2And3Years':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 2 and 3 years'
+          break
+        case 'instantDeliveryOnly':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Instant Delivery Only'
+          break
+        case '06Months':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = '0 - 6 months'
+          break
+        case 'between6MonthsAnd1Year':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 6 months and 1 year'
+          break
+        case 'between1And2Years':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 1 and 2 years'
+          break
+        case 'between3And5Years':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 3 and 5 years'
+          break
+        case 'moreThan5Years':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'More than 5 years'
+          break
+        default:
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'N/A'
+      }
 
-      temp.data.procurementStage = procurementStageKey[item.data.procurementStage]
+      switch (temp.data.procurementStage) {
+        case 'postSolicitation':
+          temp.data.procurementStage = 'Post-solicitation'
+          break
+        case 'preSolicitation':
+          temp.data.procurementStage = 'Pre-solicitation'
+          break
+        default:
+          temp.data.procurementStage = 'N/A'
+      }
 
-      temp.data.waiverCoverage = waiverCoverageKey[item.data.waiverCoverage]
+      switch (temp.data.waiverCoverage) {
+        case 'individualWaiver':
+          temp.data.waiverCoverage = 'Individual Waiver'
+          break
+        case 'multiProcurementWaiver':
+          temp.data.waiverCoverage = 'Multi-procurement Waiver'
+          break
+        default:
+          temp.data.waiverCoverage = 'N/A'
+      }
 
-      temp.data.ombDetermination = ombDeterminationKey[item.data.ombDetermination]
+      switch (temp.data.ombDetermination) {
+        case 'consistentWithPolicy':
+          temp.data.ombDetermination = 'Consistent with Policy'
+          break
+        case 'inconsistentWithPolicy':
+          temp.data.ombDetermination = 'Inconsistent with Policy'
+          break
+        case 'conditionallyConsistentWithPolicy':
+          temp.data.waiverCoverage = 'Conditionally Consistent with Policy'
+          break
+        default:
+          temp.data.waiverCoverage = 'N/A'
+      }
 
-      temp.data.sourcesSoughtOrRfiIssued =
-        sourcesSoughtOrRfiIssuedKey[item.data.sourcesSoughtOrRfiIssued]
+      switch (temp.data.sourcesSoughtOrRfiIssued || temp.data.isPricePreferenceIncluded) {
+        case 'no':
+          temp.data.sourcesSoughtOrRfiIssued = 'No'
+          temp.data.isPricePreferenceIncluded = 'No'
+          break
+        case 'yes':
+          temp.data.sourcesSoughtOrRfiIssued = 'Yes'
+          temp.data.isPricePreferenceIncluded = 'Yes'
+          break
+        default:
+          temp.data.sourcesSoughtOrRfiIssued = 'N/A'
+          temp.data.isPricePreferenceIncluded = 'N/A'
+      }
 
-      temp.data.isPricePreferenceIncluded =
-        isPricePreferenceIncludedKey[item.data.isPricePreferenceIncluded]
-
-      temp.data.requestStatus = requestStatusKey[item.data.requestStatus]
+      switch (temp.data.requestStatus) {
+        case 'reviewed':
+          temp.data.requestStatus = 'Reviewed'
+          break
+        case 'submitted':
+          temp.data.requestStatus = 'Submitted'
+          break
+        default:
+          temp.data.requestStatus = 'N/A'
+      }
 
       return temp
     })
