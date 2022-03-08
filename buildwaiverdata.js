@@ -26,7 +26,7 @@ class DataScript {
       let newFormData
       const fileCheck = DataScript.checkifWaiverFileExists(waiversFile) // returns true or false
       if (fileCheck === false) {
-        formsData = await this.getData(DATAURL)
+        formsData = await DataScript.getData(DATAURL)
         const cleanedFormData = this.createMappedData(formsData)
         fs.writeFileSync(waiversFile, JSON.stringify(cleanedFormData), 'utf-8', null, 2)
         console.log('COMPLETED')
