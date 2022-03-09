@@ -608,42 +608,6 @@
         "modified": "2022-03-02T19:49:54.047Z"
     },
     {
-        "_id": "621e48138fdeb13c288bfbbd",
-        "state": "submitted",
-        "data": {
-            "contractingOfficeAgencyId": "1434",
-            "contractingOfficeAgencyName": "US GEOLOGICAL SURVEY",
-            "fundingAgencyId": "1434",
-            "fundingAgencyName": "US GEOLOGICAL SURVEY",
-            "naics": {
-                "NAICS_Code": 334513,
-                "NAICS_Title": "Instruments and Related Products Manufacturing for Measuring, Displaying, and Controlling Industrial Process Variables "
-            },
-            "psc": {
-                "pscId": 633,
-                "pscCode": "5845",
-                "pscName": "UNDERWATER SOUND EQUIPMENT"
-            },
-            "procurementStage": "Pre-solicitation",
-            "procurementTitle": "Acoustic Transmitting Tags and Receivers",
-            "summaryOfProcurement": "USGS is purchasing acoustic transmitting tags and receivers to monitor fish. ",
-            "sourcesSoughtOrRfiIssued": "No",
-            "piids": [
-                {
-                    "piid": ""
-                }
-            ],
-            "isPricePreferenceIncluded": "No",
-            "waiverCoverage": "Individual Waiver",
-            "waiverRationaleSummary": "No other manufacturer was identified due to the telemetry transmitter coding architecture of the specified telemetry systems being proprietary and the need for compatibility with existing receivers or transmitters in Government inventory. The immediate need for telemetry systems is to address research already underway which prevents the consideration of new systems or technologies not already available on the market. ",
-            "requestStatus": "Submitted",
-            "ombDetermination": "",
-            "countriesOfOriginAndUSContent": []
-        },
-        "created": "2022-03-01T16:21:39.685Z",
-        "modified": "2022-03-01T16:21:39.685Z"
-    },
-    {
         "_id": "6217cddc5631a8a9079de7bf",
         "state": "submitted",
         "data": {

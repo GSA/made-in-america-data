@@ -26,7 +26,7 @@ class DataScript {
       let newFormData
       const fileCheck = DataScript.checkifWaiverFileExists(waiversFile) // returns true or false
       if (fileCheck === false) {
-        formsData = await this.getData(DATAURL)
+        formsData = await DataScript.getData(DATAURL)
         const cleanedFormData = this.createMappedData(formsData)
         fs.writeFileSync(waiversFile, JSON.stringify(cleanedFormData), 'utf-8', null, 2)
         console.log('COMPLETED')
@@ -124,61 +124,97 @@ class DataScript {
       this.ajaxData.data = this.covertBase64toUTF8(ajaxData)
     }
 
-    const expectedDuration = {
-      between2And3Years: 'Between 2 and 3 years',
-      instantDeliveryOnly: 'Instant Delivery Only',
-      '06Months': '0 - 6 months',
-      between6MonthsAnd1Year: 'Between 6 months and 1 year',
-      between1And2Years: 'Between 1 and 2 years',
-      between3And5Years: 'Between 3 and 5 years',
-      moreThan5Years: 'More than 5 years',
-    }
     // * ...string manipulation for better readable text for the front end
     return ajaxData.map(item => {
       const temp = { ...item }
 
-      temp.data.expectedMaximumDurationOfTheRequestedWaiver =
-        expectedDuration[item.data.expectedMaximumDurationOfTheRequestedWaiver]
+      switch (temp.data.expectedMaximumDurationOfTheRequestedWaiver) {
+        case 'between2And3Years':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 2 and 3 years'
+          break
+        case 'instantDeliveryOnly':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Instant Delivery Only'
+          break
+        case '06Months':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = '0 - 6 months'
+          break
+        case 'between6MonthsAnd1Year':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 6 months and 1 year'
+          break
+        case 'between1And2Years':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 1 and 2 years'
+          break
+        case 'between3And5Years':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 3 and 5 years'
+          break
+        case 'moreThan5Years':
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'More than 5 years'
+          break
+        default:
+          temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'N/A'
+      }
 
-      if (temp.data.procurementStage === 'postSolicitation') {
-        temp.data.procurementStage = 'Post-solicitation'
+      switch (temp.data.procurementStage) {
+        case 'postSolicitation':
+          temp.data.procurementStage = 'Post-solicitation'
+          break
+        case 'preSolicitation':
+          temp.data.procurementStage = 'Pre-solicitation'
+          break
+        default:
+          temp.data.procurementStage = 'N/A'
       }
-      if (temp.data.procurementStage === 'preSolicitation') {
-        temp.data.procurementStage = 'Pre-solicitation'
+
+      switch (temp.data.waiverCoverage) {
+        case 'individualWaiver':
+          temp.data.waiverCoverage = 'Individual Waiver'
+          break
+        case 'multiProcurementWaiver':
+          temp.data.waiverCoverage = 'Multi-procurement Waiver'
+          break
+        default:
+          temp.data.waiverCoverage = 'N/A'
       }
-      if (temp.data.waiverCoverage === 'individualWaiver') {
-        temp.data.waiverCoverage = 'Individual Waiver'
+
+      switch (temp.data.ombDetermination) {
+        case 'consistentWithPolicy':
+          temp.data.ombDetermination = 'Consistent with Policy'
+          break
+        case 'inconsistentWithPolicy':
+          temp.data.ombDetermination = 'Inconsistent with Policy'
+          break
+        case 'conditionallyConsistentWithPolicy':
+          temp.data.waiverCoverage = 'Conditionally Consistent with Policy'
+          break
+        default:
+          temp.data.waiverCoverage = 'N/A'
       }
-      if (temp.data.waiverCoverage === 'multiProcurementWaiver') {
-        temp.data.waiverCoverage = 'Multi-procurement Waiver'
+
+      switch (temp.data.sourcesSoughtOrRfiIssued || temp.data.isPricePreferenceIncluded) {
+        case 'no':
+          temp.data.sourcesSoughtOrRfiIssued = 'No'
+          temp.data.isPricePreferenceIncluded = 'No'
+          break
+        case 'yes':
+          temp.data.sourcesSoughtOrRfiIssued = 'Yes'
+          temp.data.isPricePreferenceIncluded = 'Yes'
+          break
+        default:
+          temp.data.sourcesSoughtOrRfiIssued = 'N/A'
+          temp.data.isPricePreferenceIncluded = 'N/A'
       }
-      if (temp.data.ombDetermination === 'consistentWithPolicy') {
-        temp.data.ombDetermination = 'Consistent with Policy'
+
+      switch (temp.data.requestStatus) {
+        case 'reviewed':
+          temp.data.requestStatus = 'Reviewed'
+          break
+        case 'submitted':
+          temp.data.requestStatus = 'Submitted'
+          break
+        default:
+          temp.data.requestStatus = 'N/A'
       }
-      if (temp.data.ombDetermination === 'inconsistentWithPolicy') {
-        temp.data.ombDetermination = 'Inconsistent with Policy'
-      }
-      if (temp.data.ombDetermination === 'conditionallyConsistentWithPolicy') {
-        temp.data.ombDetermination = 'Conditionally Consistent with Policy'
-      }
-      if (temp.data.sourcesSoughtOrRfiIssued === 'no') {
-        temp.data.sourcesSoughtOrRfiIssued = 'No'
-      }
-      if (temp.data.sourcesSoughtOrRfiIssued === 'yes') {
-        temp.data.sourcesSoughtOrRfiIssued = 'Yes'
-      }
-      if (temp.data.isPricePreferenceIncluded === 'no') {
-        temp.data.isPricePreferenceIncluded = 'No'
-      }
-      if (temp.data.isPricePreferenceIncluded === 'yes') {
-        temp.data.isPricePreferenceIncluded = 'Yes'
-      }
-      if (temp.data.requestStatus === 'reviewed') {
-        temp.data.requestStatus = 'Reviewed'
-      }
-      if (temp.data.requestStatus === 'submitted') {
-        temp.data.requestStatus = 'Submitted'
-      }
+
       return temp
     })
   }
