@@ -22,6 +22,7 @@ class DataScript {
 
   async runScript() {
     try {
+      console.log(`Pulling from the ${CIRCLE_BRANCH}`)
       let formsData
       let newFormData
       const fileCheck = DataScript.checkifWaiverFileExists(waiversFile) // returns true or false
