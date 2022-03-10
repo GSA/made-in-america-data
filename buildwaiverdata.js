@@ -53,7 +53,7 @@ class DataScript {
       const newFileFromData = DataScript.addNewWaivers(formsData, newFormData)
       const completedData = this.updateReviewedWaivers(formsData, newFileFromData)
       console.log(`There are a total of ${completedData.length} waivers being submitted`)
-      // this.ajaxMethod(completedData, '')
+      this.ajaxMethod(completedData, '')
     } catch (error) {
       console.log(`${error} in run script`)
     }
@@ -136,6 +136,7 @@ class DataScript {
     // * ...string manipulation for better readable text for the front end
     return ajaxData.map(item => {
       const temp = { ...item }
+      console.log(temp.data.expectedMaximumDurationOfTheRequestedWaiver)
       switch (temp.data.expectedMaximumDurationOfTheRequestedWaiver) {
         case 'between2And3Years':
         case 'Between 2 and 3 years':
@@ -228,7 +229,6 @@ class DataScript {
           temp.data.sourcesSoughtOrRfiIssued = 'N/A'
           temp.data.isPricePreferenceIncluded = 'N/A'
       }
-      console.log('request STATUS-->', temp.data.requestStatus)
       switch (temp.data.requestStatus.toLowerCase()) {
         case 'reviewed':
           temp.data.requestStatus = 'Reviewed'
@@ -239,8 +239,6 @@ class DataScript {
         default:
           temp.data.requestStatus = 'N/A'
       }
-      console.log('temp', temp)
-
       return temp
     })
   }
