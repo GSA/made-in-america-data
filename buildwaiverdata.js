@@ -8,6 +8,8 @@ if (process.env.NODE_ENV !== 'production') {
 const fs = require('fs')
 const axios = require('axios')
 
+const dataDir = '.'
+
 let waiversFile = `${__dirname}/waivers-data.json`
 const newWaiversFile = `${__dirname}/current-waivers.json`
 const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH } = process.env
@@ -35,17 +37,23 @@ class DataScript {
       }
 
       // if current.json already exists
-      formsData = JSON.parse(fs.readFileSync(waiversFile, 'utf-8', null, 2))
+      // console.log('waviersfile', waiversFile)
+      formsData = JSON.parse(fs.readFileSync(`${dataDir}/waivers-data.json`))
       const newFile = DataScript.newWaiverFileCheck(newWaiversFile) // should return true
       if (newFile === true) {
+        console.log('new file is TRUE')
         newFormData = await DataScript.getData(DATAURL)
+        console.log('Before cleaned data-->', formsData)
         const newCleanedFormData = this.createMappedData(formsData)
+        // console.log('CLEANED', newCleanedFormData)
+
+        // fs.writeFileSync(newWaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
         fs.writeFileSync(newWaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
       }
       const newFileFromData = DataScript.addNewWaivers(formsData, newFormData)
       const completedData = this.updateReviewedWaivers(formsData, newFileFromData)
       console.log(`There are a total of ${completedData.length} waivers being submitted`)
-      this.ajaxMethod(completedData, '')
+      // this.ajaxMethod(completedData, '')
     } catch (error) {
       console.log(`${error} in run script`)
     }
@@ -83,7 +91,7 @@ class DataScript {
     // * filter out the data that does no exist in the old data
     const diff = newData.filter(n => !oldData.some(item => n._id === item._id))
     // * and write them into the new file
-
+    // console.log('this.newData', this.newData)
     const combined = [this.newData, ...diff]
 
     fs.writeFileSync(newWaiversFile, JSON.stringify(combined), 'utf-8')
@@ -128,27 +136,33 @@ class DataScript {
     // * ...string manipulation for better readable text for the front end
     return ajaxData.map(item => {
       const temp = { ...item }
-
       switch (temp.data.expectedMaximumDurationOfTheRequestedWaiver) {
         case 'between2And3Years':
+        case 'Between 2 and 3 years':
           temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 2 and 3 years'
           break
         case 'instantDeliveryOnly':
+        case 'Instant Delivery Only':
           temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Instant Delivery Only'
           break
         case '06Months':
+        case '0 - 6 months':
           temp.data.expectedMaximumDurationOfTheRequestedWaiver = '0 - 6 months'
           break
         case 'between6MonthsAnd1Year':
+        case 'Between 6 months and 1 year':
           temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 6 months and 1 year'
           break
         case 'between1And2Years':
+        case 'Between 1 and 2 years':
           temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 1 and 2 years'
           break
         case 'between3And5Years':
+        case 'Between 3 and 5 years':
           temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'Between 3 and 5 years'
           break
         case 'moreThan5Years':
+        case 'More than 5 years':
           temp.data.expectedMaximumDurationOfTheRequestedWaiver = 'More than 5 years'
           break
         default:
@@ -157,9 +171,11 @@ class DataScript {
 
       switch (temp.data.procurementStage) {
         case 'postSolicitation':
+        case 'Post-solicitation':
           temp.data.procurementStage = 'Post-solicitation'
           break
         case 'preSolicitation':
+        case 'Pre-solicitation':
           temp.data.procurementStage = 'Pre-solicitation'
           break
         default:
@@ -168,9 +184,11 @@ class DataScript {
 
       switch (temp.data.waiverCoverage) {
         case 'individualWaiver':
+        case 'Individual Waiver':
           temp.data.waiverCoverage = 'Individual Waiver'
           break
         case 'multiProcurementWaiver':
+        case 'Multi-procurement Waiver':
           temp.data.waiverCoverage = 'Multi-procurement Waiver'
           break
         default:
@@ -179,19 +197,25 @@ class DataScript {
 
       switch (temp.data.ombDetermination) {
         case 'consistentWithPolicy':
+        case 'Consistent with Policy':
           temp.data.ombDetermination = 'Consistent with Policy'
           break
         case 'inconsistentWithPolicy':
+        case 'Inconsistent with Policy':
           temp.data.ombDetermination = 'Inconsistent with Policy'
           break
         case 'conditionallyConsistentWithPolicy':
+        case 'Conditionally Consistent with Policy':
           temp.data.waiverCoverage = 'Conditionally Consistent with Policy'
           break
         default:
           temp.data.waiverCoverage = 'N/A'
       }
 
-      switch (temp.data.sourcesSoughtOrRfiIssued || temp.data.isPricePreferenceIncluded) {
+      switch (
+        temp.data.sourcesSoughtOrRfiIssued.toLowerCase() ||
+        temp.data.isPricePreferenceIncluded.toLowerCase()
+      ) {
         case 'no':
           temp.data.sourcesSoughtOrRfiIssued = 'No'
           temp.data.isPricePreferenceIncluded = 'No'
@@ -204,10 +228,9 @@ class DataScript {
           temp.data.sourcesSoughtOrRfiIssued = 'N/A'
           temp.data.isPricePreferenceIncluded = 'N/A'
       }
-
-      switch (temp.data.requestStatus) {
+      console.log('request STATUS-->', temp.data.requestStatus)
+      switch (temp.data.requestStatus.toLowerCase()) {
         case 'reviewed':
-          console.log('request staus is ', temp.data.requestStatus)
           temp.data.requestStatus = 'Reviewed'
           break
         case 'submitted':
@@ -216,6 +239,7 @@ class DataScript {
         default:
           temp.data.requestStatus = 'N/A'
       }
+      console.log('temp', temp)
 
       return temp
     })
@@ -314,7 +338,9 @@ class DataScript {
          * ! another PUT request
          */
         if (error.response.status === 409) {
-          console.log('409 --- waviers.json already exists...going to get sha value to update!')
+          console.log(
+            '409 --- waviers-data.json already exists...going to get sha value to update!',
+          )
           this.updateRepo(data)
         } else {
           console.log('error', error)
