@@ -22,7 +22,7 @@ class DataScript {
 
   async runScript() {
     try {
-      console.log(`PULLING FROM THE ${CIRCLE_BRANCH}`)
+      console.log(`PULLING FROM THE ${CIRCLE_BRANCH} BRANCH`)
       let formsData
       let newFormData
       const fileCheck = DataScript.checkifWaiverFileExists(waiversFile) // returns true or false
@@ -207,6 +207,7 @@ class DataScript {
 
       switch (temp.data.requestStatus) {
         case 'reviewed':
+          console.log('request staus is ', temp.data.requestStatus)
           temp.data.requestStatus = 'Reviewed'
           break
         case 'submitted':
