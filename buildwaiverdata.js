@@ -37,21 +37,17 @@ class DataScript {
       }
 
       // if current.json already exists
-      // console.log('waviersfile', waiversFile)
       formsData = JSON.parse(fs.readFileSync(`${dataDir}/waivers-data.json`))
       const newFile = DataScript.newWaiverFileCheck(newWaiversFile) // should return true
       if (newFile === true) {
         console.log('new file is TRUE')
         newFormData = await DataScript.getData(DATAURL)
-        console.log('Before cleaned data-->', formsData)
-        const newCleanedFormData = this.createMappedData(formsData)
-        // console.log('CLEANED', newCleanedFormData)
 
-        // fs.writeFileSync(newWaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
+        const newCleanedFormData = this.createMappedData(formsData)
         fs.writeFileSync(newWaiversFile, JSON.stringify(newCleanedFormData), 'utf-8', null, 2)
       }
       const newFileFromData = DataScript.addNewWaivers(formsData, newFormData)
-      const completedData = this.updateReviewedWaivers(formsData, newFileFromData)
+      const completedData = DataScript.updateReviewedWaivers(formsData, newFileFromData)
       console.log(`There are a total of ${completedData.length} waivers being submitted`)
       this.ajaxMethod(completedData, '')
     } catch (error) {
@@ -87,17 +83,17 @@ class DataScript {
 
   static addNewWaivers(oldData, newData) {
     console.log('ADDING NEW WAIVERS!!!!!!')
-    this.newData = JSON.parse(fs.readFileSync(newWaiversFile, 'utf-8'))
+    // this.newData = JSON.parse(fs.readFileSync(newData, 'utf-8'))
+    // console.log('this.newdata', this.newData)
     // * filter out the data that does no exist in the old data
     const diff = newData.filter(n => !oldData.some(item => n._id === item._id))
     // * and write them into the new file
     // console.log('this.newData', this.newData)
-    const combined = [this.newData, ...diff]
-
+    const combined = [...newData, ...diff]
     fs.writeFileSync(newWaiversFile, JSON.stringify(combined), 'utf-8')
     console.log('FINISHED ADDING NEW WAIVERS...')
     console.log(`There are ${newData.length} waivers in the current file`)
-    return this.newData
+    return combined
   }
 
   static async getData(url) {
@@ -136,7 +132,6 @@ class DataScript {
     // * ...string manipulation for better readable text for the front end
     return ajaxData.map(item => {
       const temp = { ...item }
-      console.log(temp.data.expectedMaximumDurationOfTheRequestedWaiver)
       switch (temp.data.expectedMaximumDurationOfTheRequestedWaiver) {
         case 'between2And3Years':
         case 'Between 2 and 3 years':
@@ -243,30 +238,27 @@ class DataScript {
     })
   }
 
-  updateReviewedWaivers(oldData, newData) {
-    let temp = []
-    temp = oldData
+  static updateReviewedWaivers(oldData, newData) {
+    let newOldData
     console.log('Updating Waivers with new modified date')
     //  * function checks for json waivers that have changed modified data
-    const modifiedWaivers = DataScript.compareJSONsforChangesInModifiedDate(temp, newData)
+    const modifiedWaivers = DataScript.compareJSONsforChangesInModifiedDate(oldData, newData)
     if (newData) {
       console.log('in new data')
-      const modified = temp.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
-      // * and replace them.
+      const modified = oldData.map(obj => modifiedWaivers.find(o => obj._id === o._id) || obj)
+      // * and replaces them.
       const combined = newData.concat(modified)
-
       const final = combined.filter(
         (el, idx) => combined.findIndex(obj => obj._id === el._id) === idx,
       )
 
-      this.oldData = [...final]
-
-      fs.writeFileSync(waiversFile, JSON.stringify(oldData), 'utf-8')
+      newOldData = [...final]
+      fs.writeFileSync(waiversFile, JSON.stringify(newOldData), 'utf-8')
       // * delete the current waiver file as it's not longer needed till the next pull
       DataScript.unlinkFile()
-      return oldData
+      return newOldData
     }
-    return oldData
+    return newOldData
   }
 
   static unlinkFile() {
