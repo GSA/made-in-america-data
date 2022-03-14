@@ -19,7 +19,7 @@ jobs:
           name: 'run json script'
           command: |
             npm install
-            node buildwaiverdata.js
+            node CompileJsonApp.js
       - run:
           name: 'run csv script'
           command: |
