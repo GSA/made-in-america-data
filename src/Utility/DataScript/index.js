@@ -88,16 +88,20 @@ class DataScript {
           if (this.formsData[i]._id === this.fileData[j]._id) {
             isFound = true
             this.fileData[j] = this.formsData[i]
-            this.fileData[j].data = DataScript.processDataElement(this.formsData[i].data)
             // eslint-disable-next-line no-continue
             continue
           }
         }
       }
       if (!isFound) {
-        const item = this.formsData[i]
+        this.fileData.push(this.formsData[i])
+      }
+    }
+    if (this.fileData.length) {
+      for (let i = 0; i < this.fileData.length; i += 1) {
+        const item = this.fileData[i]
         item.data = DataScript.processDataElement(item.data)
-        this.fileData.push(item)
+        this.fileData[i] = item
       }
     }
   }
