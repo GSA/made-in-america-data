@@ -80,6 +80,9 @@ class DataScript {
    * If they dont exist update strings and add to file array.
    */
   processData() {
+    if (this.formsData.length) {
+      this.formsData = DataScript.removeWaivers(this.formsData)
+    }
     for (let i = 0; i < this.formsData.length; i += 1) {
       let isFound = false
       if (this.fileData.length) {
@@ -104,6 +107,17 @@ class DataScript {
         this.fileData[i] = item
       }
     }
+  }
+  /**
+   * Take the data object and remove waivers
+   * if their requestStatus == 'withdrawn'
+   * @param {object} data
+   * @returns {object} data waivers
+   */
+
+  static removeWaivers(formsdata) {
+    const noWithdrawnWaviers = formsdata.filter(ele => ele.data.requestStatus === 'withdrawn')
+    return noWithdrawnWaviers
   }
 
   /**
