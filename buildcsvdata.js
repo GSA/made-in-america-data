@@ -151,7 +151,7 @@ function convertJSONToCSV(jsondata) {
     fs.writeFileSync('./waivers.csv', csv)
     const csvFile = fs.readFileSync('./waivers.csv')
     console.log('JSON converted')
-    // CSVajaxMethod(csvFile, '', WAIVERS_CSV_URL)
+    CSVajaxMethod(csvFile, '', WAIVERS_CSV_URL)
   } catch (err) {
     console.error(err)
   }
