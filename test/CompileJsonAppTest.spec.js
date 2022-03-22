@@ -63,14 +63,15 @@ describe('Test for forms public data', () => {
   })
 })
 
-describe('Testing remove waiver functionality', () => {
+describe.only('Testing remove waiver functionality', () => {
   const dataScript = new ds.DataScript(fileData, formsData)
   it('should have status of withdrawn', () => {
-    expect(dataScript.formsData[1].data.requestStatus).to.equal('withdrawn')
-    expect(dataScript.formsData).to.have.lengthOf(2)
+    expect(dataScript.fileData[1].data.requestStatus).to.equal('withdrawn')
+    expect(dataScript.fileData).to.have.lengthOf(3)
   })
   it('should remove waiver object from json', () => {
     dataScript.processData()
-    expect(dataScript.formsData).to.have.lengthOf(1)
+    expect(dataScript.fileData).to.have.lengthOf(2)
+    expect(dataScript.fileData[2]).to.be.undefined
   })
 })
