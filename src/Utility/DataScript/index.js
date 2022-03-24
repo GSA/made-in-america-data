@@ -99,8 +99,6 @@ class DataScript {
     }
     if (this.fileData.length) {
       this.fileData = DataScript.removeWaivers(this.fileData)
-    }
-    if (this.fileData.length) {
       for (let i = 0; i < this.fileData.length; i += 1) {
         const item = this.fileData[i]
         item.data = DataScript.processDataElement(item.data)

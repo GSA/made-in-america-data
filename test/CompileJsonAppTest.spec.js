@@ -17,7 +17,7 @@ describe('Test for forms public data', () => {
    */
   it('Test class constructor properties', () => {
     const dataScript = new ds.DataScript(fileData, formsData)
-    expect(dataScript.fileData).to.have.lengthOf(1)
+    expect(dataScript.fileData).to.have.lengthOf(3)
     expect(dataScript.formsData).to.have.lengthOf(2)
     // eslint-disable-next-line no-underscore-dangle
     expect(dataScript.fileData[0]._id).to.equal('619ba9sfsdfdsfdasfdf')
@@ -63,7 +63,7 @@ describe('Test for forms public data', () => {
   })
 })
 
-describe.only('Testing remove waiver functionality', () => {
+describe('Testing remove waiver functionality', () => {
   const dataScript = new ds.DataScript(fileData, formsData)
   it('should have status of withdrawn', () => {
     expect(dataScript.fileData[1].data.requestStatus).to.equal('withdrawn')
