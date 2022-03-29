@@ -98,12 +98,24 @@ class DataScript {
       }
     }
     if (this.fileData.length) {
+      this.fileData = DataScript.removeWaivers(this.fileData)
       for (let i = 0; i < this.fileData.length; i += 1) {
         const item = this.fileData[i]
         item.data = DataScript.processDataElement(item.data)
         this.fileData[i] = item
       }
     }
+  }
+
+  /**
+   * Take the data object and remove waivers
+   * if their requestStatus == 'withdrawn'
+   * @param {object} data
+   * @returns {object} data waivers
+   */
+  static removeWaivers(filedata) {
+    const noWithdrawnWaviers = filedata.filter(ele => ele.data.requestStatus !== 'withdrawn')
+    return noWithdrawnWaviers
   }
 
   /**
