@@ -61,6 +61,8 @@ function StringReplace(value) {
     case 'yes':
     case 'Yes':
       return 'Yes'
+    case 'withdrawn':
+      return 'withdrawn'
     default:
       return 'N/A'
   }
