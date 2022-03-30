@@ -46,6 +46,28 @@ class DataScript {
   }
 
   /**
+   * Make a ajax call to the forms.io endpoint and
+   * returns a DataScript obj with the form data set.
+   *
+   * @returns {DataScript} DataScript object set with forms data.
+   */
+  static async UrgentWaiverinit() {
+    // fetch the waivers-data.json file results
+    const fileDataResults = await this.fetchDataFile(vars.URGENT_WAIVER_FILE)
+    // fetch the results form form.io api
+    const formDataResults = await this.fetchData(vars.URGENT_WAIVER_URL, {
+      method: 'get',
+      headers: {
+        'x-token': vars.FORMS_API_KEY,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    // return a new DataScript object with
+    return new DataScript(fileDataResults, formDataResults)
+  }
+
+  /**
    * Uses Axios to make ajax calls and return results.
    *
    * @param {string} url
