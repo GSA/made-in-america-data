@@ -1,7 +1,7 @@
 // eslint-disable-next-line node/no-unpublished-require
 const { expect } = require('chai')
 const ds = require('../src/Utility/DataScript')
-const sr = require('../src/Utility/StringReplace')
+const sr = require('../src/Utility/StringReplace/index')
 
 // set the mock data
 const fileData = require('./testfiles/fileData')

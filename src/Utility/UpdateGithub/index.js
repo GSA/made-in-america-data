@@ -7,7 +7,7 @@ const vars = require('../../Variables')
  *
  * @param {array} data
  */
-async function updateRepo(data) {
+async function updateRepo(data, waiverURL) {
   console.log('getting SHA Value for Update')
   const options = {
     headers: {
@@ -15,11 +15,11 @@ async function updateRepo(data) {
       'Content-Type': 'application/json',
     },
   }
-  const response = await DS.DataScript.fetchData(vars.GITHUB_URL, options)
+  const response = await DS.DataScript.fetchData(waiverURL, options)
   const shaValue = response.sha
 
   // eslint-disable-next-line no-use-before-define
-  UpdateGithub(data, shaValue)
+  UpdateGithub(data, shaValue, waiverURL)
 }
 
 /**
@@ -28,7 +28,7 @@ async function updateRepo(data) {
  * @param {array} data
  * @param {string} shaValue
  */
-async function UpdateGithub(data, shaValue) {
+async function UpdateGithub(data, shaValue, waiverURL) {
   // when pushing to github, the data must be encoded to base64 format
   const buffered = Buffer.from(JSON.stringify(data)).toString('base64')
   // and then the commit message, and all data must be stringfied
@@ -52,7 +52,7 @@ async function UpdateGithub(data, shaValue) {
 
   const config = {
     method: 'put',
-    url: vars.GITHUB_URL,
+    url: waiverURL,
     headers: {
       Authorization: `Bearer ${vars.GH_API_KEY}`,
       'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ async function UpdateGithub(data, shaValue) {
        */
       if (error.response.status === 409) {
         console.log('409 --- waviers.json already exists...going to get sha value to update!')
-        updateRepo(data)
+        updateRepo(data, waiverURL)
       } else {
         console.log('error', error)
       }

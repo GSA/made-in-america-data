@@ -1,7 +1,7 @@
 const axios = require('axios')
 const fs = require('fs')
-const sr = require('../StringReplace')
-const vars = require('../../Variables')
+const sr = require('../StringReplace/index')
+const urgentSR = require('../StringReplace/urgent-index')
 
 /**
  * This utility class manages the handling of data
@@ -26,39 +26,20 @@ class DataScript {
   /**
    * Make a ajax call to the forms.io endpoint and
    * returns a DataScript obj with the form data set.
+   * @param {string} waiverFile // waivers.json or urgent-waivers-data.json
+   * @param {string} dataURL // the forms.io endpoint for nonAvailibility/Urgent Waivers
+   * @param {string} apiKey // The api key for the nonavailibility vs urgent
    *
    * @returns {DataScript} DataScript object set with forms data.
    */
-  static async init() {
+  static async init(waiverFile, dataURL, apiKey) {
     // fetch the waivers-data.json file results
-    const fileDataResults = await this.fetchDataFile(vars.WAIVER_FILE)
+    const fileDataResults = await this.fetchDataFile(waiverFile)
     // fetch the results form form.io api
-    const formDataResults = await this.fetchData(vars.DATA_URL, {
+    const formDataResults = await this.fetchData(dataURL, {
       method: 'get',
       headers: {
-        'x-token': vars.FORMS_API_KEY,
-        'Content-Type': 'application/json',
-      },
-    })
-
-    // return a new DataScript object with
-    return new DataScript(fileDataResults, formDataResults)
-  }
-
-  /**
-   * Make a ajax call to the forms.io endpoint and
-   * returns a DataScript obj with the form data set.
-   *
-   * @returns {DataScript} DataScript object set with forms data.
-   */
-  static async UrgentWaiverinit() {
-    // fetch the waivers-data.json file results
-    const fileDataResults = await this.fetchDataFile(vars.URGENT_WAIVER_FILE)
-    // fetch the results form form.io api
-    const formDataResults = await this.fetchData(vars.URGENT_WAIVER_URL, {
-      method: 'get',
-      headers: {
-        'x-token': vars.FORMS_API_KEY,
+        'x-token': apiKey,
         'Content-Type': 'application/json',
       },
     })
@@ -149,6 +130,13 @@ class DataScript {
    */
   static processDataElement(data) {
     const tmp = data
+
+    if (tmp.waiverType) {
+      tmp.identifyUrgencyContributedToNonavailability = urgentSR.urgentStringReplace(
+        tmp.identifyUrgencyContributedToNonavailability,
+      )
+      return tmp
+    }
     tmp.expectedMaximumDurationOfTheRequestedWaiver = sr.StringReplace(
       tmp.expectedMaximumDurationOfTheRequestedWaiver,
     )
@@ -164,8 +152,8 @@ class DataScript {
   /**
    * Write the file array to the Json file.
    */
-  writeDataFile() {
-    fs.writeFileSync(vars.WAIVER_FILE, JSON.stringify(this.fileData))
+  writeDataFile(url) {
+    fs.writeFileSync(url, JSON.stringify(this.fileData))
   }
 }
 
