@@ -16,7 +16,21 @@ async function App() {
   await dataScript.writeDataFile(vars.WAIVER_FILE)
   console.log('Update Github')
   await pushGithub.UpdateGithub(dataScript.fileData, '', vars.GITHUB_URL)
-  console.log('Script is finished.')
+  console.log('JSONScript is finished.')
+
+  console.log('Now compiling Urgent Waivers...')
+  const urgentDataScript = await DS.DataScript.init(
+    vars.URGENT_FILE,
+    vars.URGENT_DATA_URL,
+    vars.URGENT_API_KEY,
+  )
+  console.log('Now processing Urgent Waiver Data', urgentDataScript.fileData.length)
+  await urgentDataScript.processData()
+  console.log(`Writting ${urgentDataScript.fileData.length} records to ${vars.URGENT_FILE}`)
+  await urgentDataScript.writeDataFile(vars.URGENT_FILE)
+  console.log('Update Github')
+  await pushGithub.UpdateGithub(urgentDataScript.fileData, '', vars.URGENT_GH_URL)
+  console.log('Urgent Waiver Script is finished.')
 }
 
 App()

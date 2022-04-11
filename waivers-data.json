@@ -481,12 +481,12 @@
             "waiverCoverage": "Individual Waiver",
             "waiverRationaleSummary": "If the Alaska Science Center does not obtain the required equipment (i.e., additional GPS transmitters) they will not be able to obtain enough GPS tag deployments to provide insight on the recovery of seabirds and forage fish from the marine heatwave of 2014-2016.",
             "expectedMaximumDurationOfTheRequestedWaiver": "Instant Delivery Only",
-            "requestStatus": "Submitted",
-            "ombDetermination": "N/A",
+            "requestStatus": "Reviewed",
+            "ombDetermination": "Consistent with Policy",
             "countriesOfOriginAndUSContent": []
         },
         "created": "2022-03-30T13:55:03.781Z",
-        "modified": "2022-03-30T13:55:03.781Z"
+        "modified": "2022-04-05T15:46:34.145Z"
     },
     {
         "_id": "624467e61d5c030ceac2b053",
@@ -554,9 +554,8 @@
             "waiverCoverage": "Individual Waiver",
             "waiverRationaleSummary": "DOI has a IDIQ contract (ING17PC00082) for construction at 17 sites. There is an existing task order for Geyser Peak, number 140G0318F0195.  The USGS’ Earthquake Science Center operates a network of seismic sensors, radio relays, and microwave radio communications facilities known as the Northern California Seismic Network. The purpose of which is to gather real-time data on seismic activity and, recently, provide advance notice of shaking to users via an earthquake early warning system (ShakeAlert® | Earthquake Early Warning). One of the microwave radio sites, at Geyser Peak, in Sonoma County, CA, requires the construction of an off-grid solar power system to support the upgraded communications equipment recently installed. The original plan was to connect to upgraded utility power, but that has proven prohibitively expensive.  Therefore, a pivot to an off-grid solar solution came into play. DOI will modify the task order 140G0318F0195 to change from utility power to solar power, which is intended to be modification P00005, not yet issued pending approval of this waiver.",
             "expectedMaximumDurationOfTheRequestedWaiver": "Instant Delivery Only",
-            "requestStatus": "Submitted",
-            "ombDetermination": "N/A",
-            "solicitationId": "",
+            "requestStatus": "Reviewed",
+            "ombDetermination": "Consistent with Policy",
             "countriesOfOriginAndUSContent": [
                 {
                     "countryiesOfOriginAndUSContent": "",
@@ -567,11 +566,12 @@
                         "Name": "MALAYSIA"
                     }
                 }
-            ]
+            ],
+            "solicitationId": ""
         },
         "state": "submitted",
         "created": "2022-04-01T13:26:38.147Z",
-        "modified": "2022-04-01T13:26:38.147Z"
+        "modified": "2022-04-05T16:04:13.233Z"
     },
     {
         "_id": "6246eedb765b202ea7a8c5b3",
@@ -694,5 +694,42 @@
         "state": "submitted",
         "created": "2022-03-31T16:48:58.035Z",
         "modified": "2022-03-31T16:48:58.035Z"
+    },
+    {
+        "_id": "624b32d6765b202ea7a8f202",
+        "data": {
+            "contractingOfficeAgencyId": "1434",
+            "contractingOfficeAgencyName": "US GEOLOGICAL SURVEY",
+            "fundingAgencyId": "1434",
+            "fundingAgencyName": "US GEOLOGICAL SURVEY",
+            "naics": {
+                "NAICS_Code": 334516,
+                "NAICS_Title": "Analytical Laboratory Instrument Manufacturing"
+            },
+            "psc": {
+                "pscId": 799,
+                "pscCode": "6680",
+                "pscName": "LIQUID AND GAS FLOW, LIQUID LEVEL, AND MECHANICAL MOTION MEASURING INSTRUMENTS"
+            },
+            "procurementStage": "Pre-solicitation",
+            "procurementTitle": "UniPrep Sample Preparation System",
+            "summaryOfProcurement": "There is an increased demand in the analysis of organic materials containing exchangeable hydrogen, and the Reston Stable Isotope Laboratory seeks to improve process-limiting steps of conventional methods of analysis of hydrogen and oxygen isotopic analysis. The current analysis method takes weeks per sample. By purchasing the UniPrep Sample Preparation System, the Government will be able to reduce the analysis time to hours.",
+            "sourcesSoughtOrRfiIssued": "No",
+            "piids": [
+                {
+                    "piid": ""
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "There is an increased demand in the analysis of organic materials containing exchangeable hydrogen, and the Reston Stable Isotope Laboratory seeks to improve process-limiting steps of conventional methods of analysis of hydrogen and oxygen isotopic analysis. The current analysis method takes weeks per sample. By purchasing the UniPrep Sample Preparation System, the Government will be able to reduce the analysis time to hours.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Instant Delivery Only",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "countriesOfOriginAndUSContent": []
+        },
+        "state": "submitted",
+        "created": "2022-04-04T18:03:02.918Z",
+        "modified": "2022-04-04T18:03:02.918Z"
     }
 ]

@@ -132,7 +132,7 @@ class DataScript {
     const tmp = data
 
     if (tmp.waiverType) {
-      tmp.identifyUrgencyContributedToNonavailability = urgentSR.urgentStringReplace(
+      tmp.identifyUrgencyContributedToNonavailability = sr.StringReplace(
         tmp.identifyUrgencyContributedToNonavailability,
       )
       return tmp
