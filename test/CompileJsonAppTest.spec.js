@@ -10,8 +10,6 @@ const formsData = require('./testfiles/formData')
 const urgentfileData = require('./urgenttestfiles/urgentfileData')
 const urgentformsData = require('./urgenttestfiles/urgentFormData')
 
-const urgentSR = require('../src/Utility/StringReplace/urgent-index')
-
 /**
  * Test the DataScript and StringReplace code.
  */

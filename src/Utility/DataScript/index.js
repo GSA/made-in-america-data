@@ -1,7 +1,6 @@
 const axios = require('axios')
 const fs = require('fs')
 const sr = require('../StringReplace/index')
-const urgentSR = require('../StringReplace/urgent-index')
 
 /**
  * This utility class manages the handling of data

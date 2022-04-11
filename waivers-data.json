@@ -731,5 +731,618 @@
         "state": "submitted",
         "created": "2022-04-04T18:03:02.918Z",
         "modified": "2022-04-04T18:03:02.918Z"
+    },
+    {
+        "_id": "62503b57b7577ea4d2026081",
+        "data": {
+            "contractingOfficeAgencyId": "1341",
+            "contractingOfficeAgencyName": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY",
+            "fundingAgencyId": "1341",
+            "fundingAgencyName": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY",
+            "naics": {
+                "NAICS_Code": 333923,
+                "NAICS_Title": "Overhead Traveling Crane, Hoist, and Monorail System Manufacturing "
+            },
+            "psc": {
+                "pscId": 787,
+                "pscCode": "6640",
+                "pscName": "LABORATORY EQUIPMENT AND SUPPLIES"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Elebia Autohook Evo20 Hook & Associated Components",
+            "summaryOfProcurement": "This procurement is necessary to obtain a remote-controlled crane accessory known as an auto hook.  The company name brand required is Elebia. The Elebia auto hook is utilized to allow remote controlled latching and unlatching of assemblies manipulated by an overhead crane.  This remote-controlled operation is very advantages when maneuvering radioactive components.  Personnel are subjected to harmful radiation during the time when the component being transported by the crane are manually attached or removed from the crane hook.  By using the auto hook, this process is completed remotely, keeping operators at a safe distance thus protecting them from harmful radiation.",
+            "sourcesSoughtOrRfiIssued": "No",
+            "piids": [
+                {
+                    "piid": "1333ND22PNB610129"
+                }
+            ],
+            "isPricePreferenceIncluded": "Yes",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "No domestic product has been identified that can meet the Government's requirements.  The combined synopsis/solicitation included FAR 52.225-1, Buy American Act Supplies.  The Offeror certified the end products being offered are not domestic end products and are a foreign end-product of Spain.  ",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Instant Delivery Only",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "1333ND22QNB610088",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "ES",
+                        "Three": "ESP",
+                        "Numeric": 724,
+                        "Name": "SPAIN"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-08T13:40:39.727Z",
+        "modified": "2022-04-08T13:40:39.727Z"
+    },
+    {
+        "_id": "625415835a9e92e261b0e3f2",
+        "data": {
+            "contractingOfficeAgencyId": "2041",
+            "contractingOfficeAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "fundingAgencyId": "2041",
+            "fundingAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "naics": {
+                "NAICS_Code": 333244,
+                "NAICS_Title": "Printing Machinery and Equipment Manufacturing"
+            },
+            "psc": {
+                "pscId": 384,
+                "pscCode": "3610",
+                "pscName": "PRINTING, DUPLICATING, AND BOOKBINDING EQUIPMENT"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Purchase of Inventory Spare Parts",
+            "summaryOfProcurement": "Purchase of original equipment manufacturers (OEM) inventory spare parts ",
+            "sourcesSoughtOrRfiIssued": "Yes",
+            "piids": [
+                {
+                    "piid": "2031ZA22P00027"
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "Waiver is being requested due to parts/items required are proprietary to the original manufacturer of the unique equipment used by Bureau of Engraving and Printing (BEP) for currency manufacturing.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Between 2 and 3 years",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "CH",
+                        "Three": "CHE",
+                        "Numeric": 756,
+                        "Name": "SWITZERLAND"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-11T11:48:19.879Z",
+        "modified": "2022-04-11T11:48:19.879Z"
+    },
+    {
+        "_id": "62541a0c5a9e92e261b0e412",
+        "data": {
+            "contractingOfficeAgencyId": "2041",
+            "contractingOfficeAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "fundingAgencyId": "2041",
+            "fundingAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "naics": {
+                "NAICS_Code": 333244,
+                "NAICS_Title": "Printing Machinery and Equipment Manufacturing"
+            },
+            "psc": {
+                "pscId": 384,
+                "pscCode": "3610",
+                "pscName": "PRINTING, DUPLICATING, AND BOOKBINDING EQUIPMENT"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Purchase of various inventory spare parts",
+            "summaryOfProcurement": "Purchase of various inventory spare parts for the BEP's currency-manufacturing equipment",
+            "sourcesSoughtOrRfiIssued": "Yes",
+            "piids": [
+                {
+                    "piid": "2031ZA22P00089"
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "Waiver is being requested due to parts/items required are proprietary to the original manufacturer of the unique equipment used by Bureau of Engraving and Printing (BEP) for currency manufacturing.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Between 2 and 3 years",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "CH",
+                        "Three": "CHE",
+                        "Numeric": 756,
+                        "Name": "SWITZERLAND"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-11T12:07:40.823Z",
+        "modified": "2022-04-11T12:07:40.823Z"
+    },
+    {
+        "_id": "62541c0c5a9e92e261b0e42b",
+        "data": {
+            "contractingOfficeAgencyId": "2041",
+            "contractingOfficeAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "fundingAgencyId": "2041",
+            "fundingAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "naics": {
+                "NAICS_Code": 333244,
+                "NAICS_Title": "Printing Machinery and Equipment Manufacturing"
+            },
+            "psc": {
+                "pscId": 384,
+                "pscCode": "3610",
+                "pscName": "PRINTING, DUPLICATING, AND BOOKBINDING EQUIPMENT"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Purchase of inventory spare part",
+            "summaryOfProcurement": "Purchase of OEM inventory spare part, Gripper Shaft Complete, KBA P/N L5779861.",
+            "sourcesSoughtOrRfiIssued": "No",
+            "piids": [
+                {
+                    "piid": "2031ZA22P00106"
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "Waiver is being requested due to parts/items required are proprietary to the original manufacturer of the unique equipment used by Bureau of Engraving and Printing (BEP) for currency manufacturing.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Between 2 and 3 years",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "CH",
+                        "Three": "CHE",
+                        "Numeric": 756,
+                        "Name": "SWITZERLAND"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-11T12:16:12.391Z",
+        "modified": "2022-04-11T12:16:12.391Z"
+    },
+    {
+        "_id": "62541e56b7577ea4d2029d0b",
+        "data": {
+            "contractingOfficeAgencyId": "2041",
+            "contractingOfficeAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "fundingAgencyId": "2041",
+            "fundingAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "naics": {
+                "NAICS_Code": 333244,
+                "NAICS_Title": "Printing Machinery and Equipment Manufacturing"
+            },
+            "psc": {
+                "pscId": 384,
+                "pscCode": "3610",
+                "pscName": "PRINTING, DUPLICATING, AND BOOKBINDING EQUIPMENT"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Purchase of inventory spare parts",
+            "summaryOfProcurement": "Purchase of various inventory spare parts (Chain Wheels)",
+            "sourcesSoughtOrRfiIssued": "No",
+            "piids": [
+                {
+                    "piid": "2031ZA22P00113"
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "Waiver is being requested due to parts/items required are proprietary to the original manufacturer of the unique equipment used by Bureau of Engraving and Printing (BEP) for currency manufacturing.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Between 2 and 3 years",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "DE",
+                        "Three": "DEU",
+                        "Numeric": 276,
+                        "Name": "GERMANY"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-11T12:25:58.894Z",
+        "modified": "2022-04-11T12:25:58.894Z"
+    },
+    {
+        "_id": "625426225a9e92e261b0e44e",
+        "data": {
+            "contractingOfficeAgencyId": "2041",
+            "contractingOfficeAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "fundingAgencyId": "2041",
+            "fundingAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "naics": {
+                "NAICS_Code": 333244,
+                "NAICS_Title": "Printing Machinery and Equipment Manufacturing"
+            },
+            "psc": {
+                "pscId": 384,
+                "pscCode": "3610",
+                "pscName": "PRINTING, DUPLICATING, AND BOOKBINDING EQUIPMENT"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Purchase of inventory spare parts",
+            "summaryOfProcurement": "Purchase of inventory spare parts",
+            "sourcesSoughtOrRfiIssued": "Yes",
+            "piids": [
+                {
+                    "piid": "2031ZA22P00118"
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "Waiver is being requested due to parts/items required are proprietary to the original manufacturer of the unique equipment used by Bureau of Engraving and Printing (BEP) for currency manufacturing.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Between 2 and 3 years",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "CH",
+                        "Three": "CHE",
+                        "Numeric": 756,
+                        "Name": "SWITZERLAND"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-11T12:59:14.317Z",
+        "modified": "2022-04-11T12:59:14.317Z"
+    },
+    {
+        "_id": "625429085a9e92e261b0e46d",
+        "data": {
+            "contractingOfficeAgencyId": "2041",
+            "contractingOfficeAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "fundingAgencyId": "2041",
+            "fundingAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "naics": {
+                "NAICS_Code": 333244,
+                "NAICS_Title": "Printing Machinery and Equipment Manufacturing"
+            },
+            "psc": {
+                "pscId": 384,
+                "pscCode": "3610",
+                "pscName": "PRINTING, DUPLICATING, AND BOOKBINDING EQUIPMENT"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Purchase of inventory spare parts",
+            "summaryOfProcurement": "Purchase of inventory spare parts",
+            "sourcesSoughtOrRfiIssued": "Yes",
+            "piids": [
+                {
+                    "piid": "2031ZA22P00146"
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "Waiver is being requested due to parts/items required are proprietary to the original manufacturer of the unique equipment used by Bureau of Engraving and Printing (BEP) for currency manufacturing.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Between 2 and 3 years",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "CH",
+                        "Three": "CHE",
+                        "Numeric": 756,
+                        "Name": "SWITZERLAND"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-11T13:11:36.147Z",
+        "modified": "2022-04-11T13:11:36.147Z"
+    },
+    {
+        "_id": "62542b1f563fcbe16f2fd603",
+        "data": {
+            "contractingOfficeAgencyId": "2041",
+            "contractingOfficeAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "fundingAgencyId": "2041",
+            "fundingAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "naics": {
+                "NAICS_Code": 333244,
+                "NAICS_Title": "Printing Machinery and Equipment Manufacturing"
+            },
+            "psc": {
+                "pscId": 384,
+                "pscCode": "3610",
+                "pscName": "PRINTING, DUPLICATING, AND BOOKBINDING EQUIPMENT"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Purchase of inventory spare parts",
+            "summaryOfProcurement": "Purchase of various inventory spare parts",
+            "sourcesSoughtOrRfiIssued": "No",
+            "piids": [
+                {
+                    "piid": "2031ZA22P00150"
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "Waiver is being requested due to parts/items required are proprietary to the original manufacturer of the unique equipment used by Bureau of Engraving and Printing (BEP) for currency manufacturing.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Between 2 and 3 years",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "CH",
+                        "Three": "CHE",
+                        "Numeric": 756,
+                        "Name": "SWITZERLAND"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-11T13:20:31.284Z",
+        "modified": "2022-04-11T13:20:31.284Z"
+    },
+    {
+        "_id": "625430d3563fcbe16f2fd61c",
+        "data": {
+            "contractingOfficeAgencyId": "2041",
+            "contractingOfficeAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "fundingAgencyId": "2041",
+            "fundingAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "naics": {
+                "NAICS_Code": 333244,
+                "NAICS_Title": "Printing Machinery and Equipment Manufacturing"
+            },
+            "psc": {
+                "pscId": 384,
+                "pscCode": "3610",
+                "pscName": "PRINTING, DUPLICATING, AND BOOKBINDING EQUIPMENT"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Purchase of inventory spare parts",
+            "summaryOfProcurement": "Purchase of various OEM inventory spare parts",
+            "sourcesSoughtOrRfiIssued": "No",
+            "piids": [
+                {
+                    "piid": "2031ZA22P00157"
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "Waiver is being requested due to parts/items required are proprietary to the original manufacturer of the unique equipment used by Bureau of Engraving and Printing (BEP) for currency manufacturing.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Between 2 and 3 years",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "CH",
+                        "Three": "CHE",
+                        "Numeric": 756,
+                        "Name": "SWITZERLAND"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-11T13:44:51.867Z",
+        "modified": "2022-04-11T13:44:51.867Z"
+    },
+    {
+        "_id": "624ed613db68fcb5affece60",
+        "data": {
+            "contractingOfficeAgencyId": "1341",
+            "contractingOfficeAgencyName": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY",
+            "fundingAgencyId": "1341",
+            "fundingAgencyName": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY",
+            "naics": {
+                "NAICS_Code": 334516,
+                "NAICS_Title": "Analytical Laboratory Instrument Manufacturing"
+            },
+            "psc": {
+                "pscId": 787,
+                "pscCode": "6640",
+                "pscName": "LABORATORY EQUIPMENT AND SUPPLIES"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "JASCO J-1500 Accessory ",
+            "summaryOfProcurement": "one (1) diffuse reflectance circular dichroism accessory ",
+            "sourcesSoughtOrRfiIssued": "No",
+            "piids": [
+                {
+                    "piid": "1333ND22PNB680132"
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "No Domestic product has been identified that can meet the Governments requirements. The SF1449 solicitation included FAR 52.225-1, Buy American--Supplies. Japan does not fall under any of these trade agreements nor did the offeror certify compliance. ",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Instant Delivery Only",
+            "requestStatus": "Reviewed",
+            "ombDetermination": "Consistent with Policy",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "JP",
+                        "Three": "JPN",
+                        "Numeric": 392,
+                        "Name": "JAPAN"
+                    }
+                }
+            ],
+            "solicitationId": "1333ND22QNB680083"
+        },
+        "state": "submitted",
+        "created": "2022-04-07T12:16:19.900Z",
+        "modified": "2022-04-08T13:20:27.054Z"
+    },
+    {
+        "_id": "624f35acdb68fcb5affed372",
+        "data": {
+            "contractingOfficeAgencyId": "8900",
+            "contractingOfficeAgencyName": "ENERGY, DEPARTMENT OF",
+            "fundingAgencyId": "8900",
+            "fundingAgencyName": "ENERGY, DEPARTMENT OF",
+            "naics": {
+                "NAICS_Code": 335311,
+                "NAICS_Title": "Power, Distribution, and Specialty Transformer Manufacturing "
+            },
+            "psc": {
+                "pscId": 722,
+                "pscCode": "6120",
+                "pscName": "TRANSFORMERS: DISTRIBUTION AND POWER STATION"
+            },
+            "procurementStage": "Pre-solicitation",
+            "procurementTitle": "Direct Replacement of Single Core Shunt Reactors manufactured by Trench Group ",
+            "summaryOfProcurement": "Purchase of two replacement air core reactor units manufactured by Trench Group in Canada. The units are part of a three reactor unit currently in place. This requirement is brand name specific. The replacement reactors must be a matching set of Trench Core Reactors to ensure the proper fit, balance, load and performance to maintain the power grid. The Trench Core Reactor is a patented design with a unique mounting scheme and is the only one that will fit and function properly with the current existing reactor. Other core reactors are made in America, but none have the design and system compatibility to work with the existing system.  Were this procurement not designated as a small business set-aside, a waiver would not be required because the Trade Agreements Act would apply and the procurement could move forward since the items are manufactured in Canada. However, WAPA and the SBA do not want to remove this from the SBA Program. ",
+            "sourcesSoughtOrRfiIssued": "No",
+            "piids": [
+                {
+                    "piid": ""
+                }
+            ],
+            "isPricePreferenceIncluded": "Yes",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "A waiver is requested since it has been determined that only a reactor manufactured by Trench will meet the requirement for WAPA since the equipment that it will be connected to is a proprietary system.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Instant Delivery Only",
+            "requestStatus": "Reviewed",
+            "ombDetermination": "Consistent with Policy",
+            "countriesOfOriginAndUSContent": []
+        },
+        "state": "submitted",
+        "created": "2022-04-07T19:04:12.404Z",
+        "modified": "2022-04-08T13:22:19.637Z"
+    },
+    {
+        "_id": "625048ccb7577ea4d20261ff",
+        "data": {
+            "contractingOfficeAgencyId": "1341",
+            "contractingOfficeAgencyName": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY",
+            "fundingAgencyId": "1341",
+            "fundingAgencyName": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY",
+            "naics": {
+                "NAICS_Code": 334516,
+                "NAICS_Title": "Analytical Laboratory Instrument Manufacturing"
+            },
+            "psc": {
+                "pscId": 787,
+                "pscCode": "6640",
+                "pscName": "LABORATORY EQUIPMENT AND SUPPLIES"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Neutron Guide Elements",
+            "summaryOfProcurement": "The contents of this delivery order are three identical guides. The guides will be standard except for the requirement to minimize the thickness of the bottom plate and add blind tapped holes or features on the sides to allow support and alignment from the top and sides to leave the space underneath the guide free. The substrate material for all guides in this order will be aluminum.  These guides must be manufactured to the same tolerances and surface finishes/waviness as any standard neutron guide.  Because of this, they can only be acquired from a company with the expertise and equipment to design and manufacture neutron guides.",
+            "sourcesSoughtOrRfiIssued": "No",
+            "piids": [
+                {
+                    "piid": "1333ND22PNB680136"
+                }
+            ],
+            "isPricePreferenceIncluded": "Yes",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "The manufacture of neutron guides is a very specialized industry.  It requires very specialized equipment and coating techniques (mostly proprietary), special knowledge and experience and access to a neutron scattering facility for quality control and development of next-generation coatings and neutron optics.  Couple this with a very narrow market for the product and what results is only a few sources of neutron guides worldwide.  Mobilization into and out of the neutron guide business is highly unlikely.  There are no U.S. OEM sources of neutron guides.  The only known sources of neutron guides available to the small U.S. market are in Europe and are located near neutron scattering facilities similar to the NCNR.  Since the advent of cold neutron research at the NCNR in the 1980’s, guides have been procured from four sources.  One of these, CILAS, has ceased production of neutron guides.  The other three are S-DH in Heidelburg, Germany, Mirrotron in Budapest, Hungary, and Swiss Neutronics in Switzerland.  ",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Instant Delivery Only",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "1333ND22QNB680035",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "DE",
+                        "Three": "DEU",
+                        "Numeric": 276,
+                        "Name": "GERMANY"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-08T14:38:04.783Z",
+        "modified": "2022-04-08T14:38:04.783Z"
+    },
+    {
+        "_id": "625417f9563fcbe16f2fd5cb",
+        "data": {
+            "contractingOfficeAgencyId": "2041",
+            "contractingOfficeAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "fundingAgencyId": "2041",
+            "fundingAgencyName": "BUREAU OF ENGRAVING AND PRINTING",
+            "naics": {
+                "NAICS_Code": 333244,
+                "NAICS_Title": "Printing Machinery and Equipment Manufacturing"
+            },
+            "psc": {
+                "pscId": 384,
+                "pscCode": "3610",
+                "pscName": "PRINTING, DUPLICATING, AND BOOKBINDING EQUIPMENT"
+            },
+            "procurementStage": "Post-solicitation",
+            "procurementTitle": "Purchase of various inventory spare parts",
+            "summaryOfProcurement": "Purchase of various inventory spare parts for BEP's currency-manufacturing equipment",
+            "sourcesSoughtOrRfiIssued": "No",
+            "piids": [
+                {
+                    "piid": "2031ZA22P00070"
+                }
+            ],
+            "isPricePreferenceIncluded": "No",
+            "waiverCoverage": "Individual Waiver",
+            "waiverRationaleSummary": "Waiver is being requested due to parts/items required are proprietary to the original manufacturer of the unique equipment used by Bureau of Engraving and Printing (BEP) for currency manufacturing.",
+            "expectedMaximumDurationOfTheRequestedWaiver": "Between 2 and 3 years",
+            "requestStatus": "Submitted",
+            "ombDetermination": "N/A",
+            "solicitationId": "",
+            "countriesOfOriginAndUSContent": [
+                {
+                    "countryiesOfOriginAndUSContent": "",
+                    "countryOfOriginAndUSContent": {
+                        "Two": "CH",
+                        "Three": "CHE",
+                        "Numeric": 756,
+                        "Name": "SWITZERLAND"
+                    }
+                }
+            ]
+        },
+        "state": "submitted",
+        "created": "2022-04-11T11:58:49.890Z",
+        "modified": "2022-04-11T11:58:49.890Z"
     }
 ]
