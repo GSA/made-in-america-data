@@ -134,6 +134,9 @@ class DataScript {
       tmp.identifyUrgencyContributedToNonavailability = sr.StringReplace(
         tmp.identifyUrgencyContributedToNonavailability,
       )
+      tmp.ombDetermination = sr.StringReplace(tmp.ombDetermination)
+      tmp.requestStatus = sr.StringReplace(tmp.requestStatus)
+
       return tmp
     }
     tmp.expectedMaximumDurationOfTheRequestedWaiver = sr.StringReplace(
