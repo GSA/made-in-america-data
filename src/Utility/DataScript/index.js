@@ -1,7 +1,6 @@
 const axios = require('axios')
 const fs = require('fs')
-const sr = require('../StringReplace')
-const vars = require('../../Variables')
+const sr = require('../StringReplace/index')
 
 /**
  * This utility class manages the handling of data
@@ -26,17 +25,20 @@ class DataScript {
   /**
    * Make a ajax call to the forms.io endpoint and
    * returns a DataScript obj with the form data set.
+   * @param {string} waiverFile // waivers.json or urgent-waivers-data.json
+   * @param {string} dataURL // the forms.io endpoint for nonAvailibility/Urgent Waivers
+   * @param {string} apiKey // The api key for the nonavailibility vs urgent
    *
    * @returns {DataScript} DataScript object set with forms data.
    */
-  static async init() {
+  static async init(waiverFile, dataURL, apiKey) {
     // fetch the waivers-data.json file results
-    const fileDataResults = await this.fetchDataFile(vars.WAIVER_FILE)
+    const fileDataResults = await this.fetchDataFile(waiverFile)
     // fetch the results form form.io api
-    const formDataResults = await this.fetchData(vars.DATA_URL, {
+    const formDataResults = await this.fetchData(dataURL, {
       method: 'get',
       headers: {
-        'x-token': vars.FORMS_API_KEY,
+        'x-token': apiKey,
         'Content-Type': 'application/json',
       },
     })
@@ -127,6 +129,16 @@ class DataScript {
    */
   static processDataElement(data) {
     const tmp = data
+
+    if (tmp.waiverType) {
+      tmp.identifyUrgencyContributedToNonavailability = sr.StringReplace(
+        tmp.identifyUrgencyContributedToNonavailability,
+      )
+      tmp.ombDetermination = sr.StringReplace(tmp.ombDetermination)
+      tmp.requestStatus = sr.StringReplace(tmp.requestStatus)
+
+      return tmp
+    }
     tmp.expectedMaximumDurationOfTheRequestedWaiver = sr.StringReplace(
       tmp.expectedMaximumDurationOfTheRequestedWaiver,
     )
@@ -142,8 +154,8 @@ class DataScript {
   /**
    * Write the file array to the Json file.
    */
-  writeDataFile() {
-    fs.writeFileSync(vars.WAIVER_FILE, JSON.stringify(this.fileData))
+  writeDataFile(url) {
+    fs.writeFileSync(url, JSON.stringify(this.fileData))
   }
 }
 
