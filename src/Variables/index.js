@@ -10,13 +10,17 @@ exports.DATA_URL =
 exports.GITHUB_URL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waivers-data.json?ref=${process.env.CIRCLE_BRANCH}`
 
 // URGENT WAIVERS URLS
-// FORMS DEVELOPMENT URL
 exports.URGENT_GH_URL = `https://api.github.com/repos/GSA/made-in-america-data/contents/urgent-waivers-data.json?ref=${process.env.CIRCLE_BRANCH}`
-if (process.env.NODE_ENV !== 'production') {
+// PRODUCTION
+if (process.env.CIRCLE_BRANCH === 'main') {
+  exports.URGENT_DATA_URL =
+    'https://submission.forms.gov/mia-live/urgentrequirementsreport/submission?&select=_id,form,data.waiverType,data.contractingOfficeAgencyId,data.contractingOfficeAgencyName,data.naics,data.psc,data.procurementTitle,data.summaryOfProcurement,data.dateContractSigned,data.identifyUrgencyContributedToNonavailability,data.urgencyContributedExplanation,data.waiverRationaleSummary,data.anticipatedMissionImpactNoWaiver,state,created,modified,data.contractNumber,data.requestStatus,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination'
+} else if (process.env.CIRCLE_BRANCH === 'stage') {
+  // STAGE
   exports.URGENT_DATA_URL =
     'https://portal-test.forms.gov/mia-test/urgentrequirementsreport/submission?&select=_id,form,data.waiverType,data.contractingOfficeAgencyId,data.contractingOfficeAgencyName,data.naics,data.psc,data.procurementTitle,data.summaryOfProcurement,data.dateContractSigned,data.identifyUrgencyContributedToNonavailability,data.urgencyContributedExplanation,data.waiverRationaleSummary,data.anticipatedMissionImpactNoWaiver,state,created,modified,data.contractNumber,data.requestStatus,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination'
 } else {
-  // FORMS PRODUCTION URL
+  // FORMS DEV URL
   exports.URGENT_DATA_URL =
-    'https://submission.forms.gov/mia-live/urgentrequirementsreport/submission?&select=_id,form,data.waiverType,data.contractingOfficeAgencyId,data.contractingOfficeAgencyName,data.naics,data.psc,data.procurementTitle,data.summaryOfProcurement,data.dateContractSigned,data.identifyUrgencyContributedToNonavailability,data.urgencyContributedExplanation,data.waiverRationaleSummary,data.anticipatedMissionImpactNoWaiver,state,created,modified,data.contractNumber,data.requestStatus,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination'
+    'https://portal-test.forms.gov/mia-dev/urgentrequirementsreport/submission?&select=_id,form,data.waiverType,data.contractingOfficeAgencyId,data.contractingOfficeAgencyName,data.naics,data.psc,data.procurementTitle,data.summaryOfProcurement,data.dateContractSigned,data.identifyUrgencyContributedToNonavailability,data.urgencyContributedExplanation,data.waiverRationaleSummary,data.anticipatedMissionImpactNoWaiver,state,created,modified,data.contractNumber,data.requestStatus,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination'
 }

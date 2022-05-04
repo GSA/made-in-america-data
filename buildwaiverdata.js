@@ -226,6 +226,7 @@ class DataScript {
       }
       switch (temp.data.requestStatus.toLowerCase()) {
         case 'reviewed':
+          console.log('request staus is ', temp.data.requestStatus)
           temp.data.requestStatus = 'Reviewed'
           break
         case 'submitted':
