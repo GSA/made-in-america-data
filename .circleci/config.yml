@@ -18,6 +18,7 @@ jobs:
       - run:
           name: 'run json script'
           command: |
+            if [ "${CIRCLE_BRANCH}" == "main" ] ; then export URGENT_API_KEY=${URGENT_API_KEY_main}; else export URGENT_API_KEY=${URGENT_API_KEY_develop}; fi
             npm install
             node CompileJsonApp.js
       - run:
@@ -36,6 +37,7 @@ workflows:
             branches:
               only:
                 - develop
+                - feature/MIA-394
       - run-script:
           requires:
             - approval
@@ -43,6 +45,7 @@ workflows:
             branches:
               only:
                 - develop
+                - feature/MIA-394
 
   stage-workflow:
     jobs:
