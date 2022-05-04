@@ -18,8 +18,8 @@ jobs:
       - run:
           name: 'run json script'
           command: |
-            if [ "${CIRCLE_BRANCH}" == "main" ] ; then export URGENT_APIKEY=${URGENT_APIKEY_main}; else export URGENT_APIKEY=${URGENT_APIKEY_develop}; fi
-            echo $URGENT_APIKEY
+            if [ "${CIRCLE_BRANCH}" == "main" ] ; then export URGENT_API_KEY=${URGENT_API_KEY_main}; else export URGENT_APIKEY=${URGENT_API_KEY_develop}; fi
+            echo $URGENT_API_KEY
             npm install
             node CompileJsonApp.js
       - run:
