@@ -10,17 +10,20 @@ exports.URGENT_GH_URL = `https://api.github.com/repos/GSA/made-in-america-data/c
 
 // PRODUCTION URLS
 if (process.env.CIRCLE_BRANCH === 'main') {
+  console.log(`I"M GETTING DATA FROM THE  ${process.env.CIRCLE_BRANCH} BRANCH`)
   exports.URGENT_DATA_URL =
     'https://submission.forms.gov/mia-live/urgentrequirementsreport/submission?&select=_id,form,data.waiverType,data.contractingOfficeAgencyId,data.contractingOfficeAgencyName,data.naics,data.psc,data.procurementTitle,data.summaryOfProcurement,data.dateContractSigned,data.identifyUrgencyContributedToNonavailability,data.urgencyContributedExplanation,data.waiverRationaleSummary,data.anticipatedMissionImpactNoWaiver,state,created,modified,data.contractNumber,data.requestStatus,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination'
   exports.DATA_URL =
     'https://submission.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId,data.countriesOfOriginAndUSContent'
 } else if (process.env.CIRCLE_BRANCH === 'stage') {
+  console.log(`I"M GETTING DATA FROM THE  ${process.env.CIRCLE_BRANCH} BRANCH`)
   // STAGE URLS
   exports.URGENT_DATA_URL =
     'https://test.service.forms.gov/mia-test/urgentrequirementsreport/submission?&select=_id,form,data.waiverType,data.contractingOfficeAgencyId,data.contractingOfficeAgencyName,data.naics,data.psc,data.procurementTitle,data.summaryOfProcurement,data.dateContractSigned,data.identifyUrgencyContributedToNonavailability,data.urgencyContributedExplanation,data.waiverRationaleSummary,data.anticipatedMissionImpactNoWaiver,state,created,modified,data.contractNumber,data.requestStatus,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination'
   exports.DATA_URL =
     'https://test.service.forms.gov/mia-test/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId,data.countriesOfOriginAndUSContent'
 } else {
+  console.log(`I"M GETTING DATA FROM THE  ${process.env.CIRCLE_BRANCH} BRANCH`)
   // FORMS DEV URLS
   exports.URGENT_DATA_URL =
     'https://test.service.forms.gov/mia-dev/urgentrequirementsreport/submission?&select=_id,form,data.waiverType,data.contractingOfficeAgencyId,data.contractingOfficeAgencyName,data.naics,data.psc,data.procurementTitle,data.summaryOfProcurement,data.dateContractSigned,data.identifyUrgencyContributedToNonavailability,data.urgencyContributedExplanation,data.waiverRationaleSummary,data.anticipatedMissionImpactNoWaiver,state,created,modified,data.contractNumber,data.requestStatus,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination'
