@@ -19,8 +19,11 @@ jobs:
           name: 'run json script'
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ] ; then export URGENT_API_KEY=${URGENT_API_KEY_main}; fi
+            if [ "${CIRCLE_BRANCH}" == "main" ] ; then export FORMS_API_KEY=${FORMS_API_KEY_main}; fi
             if [ "${CIRCLE_BRANCH}" == "stage" ] ; then export URGENT_API_KEY=${URGENT_API_KEY_stage}; fi
-            if [ "${CIRCLE_BRANCH}" == "develop" ] ; then export URGENT_API_KEY=${URGENT_API_KEY_develop}; fi
+            if [ "${CIRCLE_BRANCH}" == "stage" ] ; then export FORMS_API_KEY=${FORMS_API_KEY_stage}; fi
+            if [ "${CIRCLE_BRANCH}" == "develop" ] ; then export URGENT_API_KEY=${URGENT_API_KEY_develop}; fi      
+            if [ "${CIRCLE_BRANCH}" == "develop" ] ; then export FORMS_API_KEY=${FORMS_API_KEY_develop}; fi
             npm install
             node CompileJsonApp.js
       - run:
