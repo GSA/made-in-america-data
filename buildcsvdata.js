@@ -11,7 +11,7 @@ const WAIVERS_CSV_URL = `https://api.github.com/repos/GSA/made-in-america-data/c
 const JSONtoCSV = require('json2csv')
 const axios = require('axios')
 
-const waiversFile = JSON.parse(fs.readFileSync(`waivers-data.json`, 'utf-8'))
+const waiversFile = JSON.parse(fs.readFileSync(`waivers-data-updated.json`, 'utf-8'))
 const fields = [
   '_id',
   'state',

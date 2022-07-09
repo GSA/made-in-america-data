@@ -10,12 +10,12 @@ const axios = require('axios')
 
 const dataDir = '.'
 
-let waiversFile = `${__dirname}/waivers-data.json`
+let waiversFile = `${__dirname}/waivers-data-updated.json`
 const newWaiversFile = `${__dirname}/current-waivers.json`
 const { GH_API_KEY: API_KEY, FORMS_API_KEY: FORMSKEY, CIRCLE_BRANCH } = process.env
 const DATAURL =
   'https://submission.forms.gov/mia-live/madeinamericanonavailabilitywaiverrequest/submission?&select=state,data.piids,data.requestStatus,data.psc,data.procurementTitle,data.contractingOfficeAgencyName,data.waiverCoverage,data.contractingOfficeAgencyId,data.fundingAgencyId,data.fundingAgencyName,data.procurementStage,data.naics,data.summaryOfProcurement,data.waiverRationaleSummary,data.sourcesSoughtOrRfiIssued,data.expectedMaximumDurationOfTheRequestedWaiver,data.isPricePreferenceIncluded,created,modified,data.ombDetermination,data.conditionsApplicableToConsistencyDetermination,data.solicitationId,data.countriesOfOriginAndUSContent'
-const GITHUBURL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waivers-data.json?ref=${CIRCLE_BRANCH}`
+const GITHUBURL = `https://api.github.com/repos/GSA/made-in-america-data/contents/waivers-data-updated.json?ref=${CIRCLE_BRANCH}`
 
 class DataScript {
   constructor() {
@@ -37,7 +37,7 @@ class DataScript {
       }
 
       // if current.json already exists
-      formsData = JSON.parse(fs.readFileSync(`${dataDir}/waivers-data.json`))
+      formsData = JSON.parse(fs.readFileSync(`${dataDir}/waivers-data-updated.json`))
       const newFile = DataScript.newWaiverFileCheck(newWaiversFile) // should return true
       if (newFile === true) {
         console.log('new file is TRUE')
